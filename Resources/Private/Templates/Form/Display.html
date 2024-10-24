@@ -1,0 +1,50 @@
+<div>
+    <h3 style="margin: 10px 10px">{form.name}</h3>
+    <f:form name="form" object="{form}" action="submit"
+        arguments="{message: form.configuration.postSubmitAction.value}">
+        <f:for each="{form.fieldGroups}" as="fieldGroup">
+            <div style="display: flex; margin: 20px 0px">
+                <f:for each="{fieldGroup.fields}" as="field">
+                    <div style="margin: 0px 10px">
+                        <f:switch expression="{field.fieldType}">
+                            <f:case value="email">{f:render(partial:'Email', arguments: {field: field, id: form.id})}
+                            </f:case>
+                            <f:case value="phone">{f:render(partial:'Phone', arguments: {field: field, id: form.id})}
+                            </f:case>
+                            <f:case value="mobile_phone">{f:render(partial:'MobilePhone', arguments: {field: field, id:
+                                form.id})}
+                            </f:case>
+                            <f:case value="single_line_text">{f:render(partial:'SingleLineText', arguments: {field:
+                                field,
+                                id: form.id})}
+                            </f:case>
+                            <f:case value="multi_line_text">{f:render(partial:'MultiLineText', arguments: {field: field,
+                                id:
+                                form.id})}
+                            </f:case>
+                            <f:case value="single_checkbox">{f:render(partial:'SingleCheckbox', arguments: {field:
+                                field,
+                                id: form.id})}
+                            </f:case>
+                            <f:case value="multiple_checkboxes">{f:render(partial:'MultipleCheckboxes', arguments:
+                                {field:
+                                field, id: form.id})}</f:case>
+                            <f:case value="radio">{f:render(partial:'Radio', arguments: {field: field, id: form.id})}
+                            </f:case>
+                            <f:case value="dropdown">{f:render(partial:'Dropdown', arguments: {field: field, id:
+                                form.id})}
+                            </f:case>
+                            <f:case value="datepicker">{f:render(partial:'Datepicker', arguments: {field: field, id:
+                                form.id})}</f:case>
+                        </f:switch>
+                    </div>
+                </f:for>
+            </div>
+        </f:for>
+        <div style="margin: 0px 10px; max-width: 60%;">
+            {f:render(partial:'LegalConsentOptions', arguments: {legalConsentOptions: form.legalConsentOptions, id:
+            form.id})}
+        </div>
+        <f:form.submit style="margin: 0px 0px 10px 10px" value="{form.displayOptions.submitButtonText}" />
+    </f:form>
+</div>

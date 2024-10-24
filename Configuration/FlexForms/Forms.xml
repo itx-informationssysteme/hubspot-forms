@@ -1,0 +1,26 @@
+<T3DataStructure>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <sheetTitle>
+                    Forms
+                </sheetTitle>
+                <type>array</type>
+                <el>
+                    <settings.form>
+                        <label>
+                            Forms</label>
+                        <config>
+                            <type>select</type>
+                            <itemsProcFunc>Itx\HubspotForms\Service\Formloader->loadForms
+                            </itemsProcFunc>
+                            <renderType>selectSingle</renderType>
+                            <items>
+                            </items>
+                        </config>
+                    </settings.form>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3DataStructure>

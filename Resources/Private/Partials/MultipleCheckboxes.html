@@ -1,0 +1,9 @@
+<div>
+    <label>{field.label}</label>
+    <f:for each="{field.options}" as="option">
+        <br>
+        <f:form.checkbox id="{id}/{field.name}/{option.label}" name="{option.value}" value="true"
+            style="appearance: auto" />
+        <label for="{id}/{field.name}/{option.label}">{option.label}</label>
+    </f:for>
+</div>

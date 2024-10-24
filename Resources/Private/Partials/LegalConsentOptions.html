@@ -1,0 +1,26 @@
+<p>
+    <f:format.stripTags>{legalConsentOptions.communicationConsentText}</f:format.stripTags>
+</p>
+<f:for each="{legalConsentOptions.communicationsCheckboxes}" as="checkbox">
+    <f:form.checkbox id="{id}/{checkbox.subscriptionTypeId}"
+        required="{f:if(condition: field.required, then: 'required', else: '')}" value="{checkbox.subscriptionTypeId}"
+        style="appearance: auto" name="legalConsentOptions/{checkbox.subscriptionTypeId}" />
+    <label for="{id}/{checkbox.subscriptionTypeId}">
+        <f:format.stripTags>{checkbox.label}</f:format.stripTags>
+    </label>
+    <br><br>
+</f:for>
+<f:if condition="{legalConsentOptions.type} == 'implicit_consent_to_process'">
+    <p>{legalConsentOptions.privacyText}</p>
+    <p>{legalConsentOptions.consentToProcessText}</p>
+</f:if>
+<f:if condition="{legalConsentOptions.type} == 'explicit_consent_to_process'">
+    <p>{legalConsentOptions.consentToProcessText}</p>
+    <f:form.checkbox id="consentToProcess"
+        required="true" value="true"
+        style="appearance: auto" name="consentToProcess" />
+    <label for="consentToProcess">
+        <f:format.stripTags>{legalConsentOptions.consentToProcessCheckboxLabel}</f:format.stripTags>
+    </label>
+    <p>{legalConsentOptions.privacyText}</p>
+</f:if>

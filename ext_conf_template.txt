@@ -1,0 +1,4 @@
+# cat=AccountData; type=string; label=Access Token: Enter your HubSpot Access Token
+accessToken =
+# cat=AccountData; type=string; label=Portal ID: Enter your HubSpot Portal ID
+portalID =
