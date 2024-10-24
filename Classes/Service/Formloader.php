@@ -13,7 +13,7 @@ class Formloader {
         $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
 
         $accessToken = 'Bearer ' . $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['accessToken'] ?? '';
-        $URL = 'https://api.hubapi.com/marketing/v3/forms/';
+        $URL = 'https://api.hubapi.com/marketing/v3/forms/?limit=1000';
 
         // Same code as in HubspotService class
         $additionalOptions = [
