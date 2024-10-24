@@ -18,12 +18,3 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] = 'Your P
 
 ## Styling 
 * Every field type of the forms is rendered by a partial, so if you want to style your forms we recommend overwriting our basic styling in the partial files, located under `Resources/Private/Partials` in the extension directory
-
-## TODO
-* Debugging
-* Error Handling
-* Testing
-    * If Access Token is wrong/missing
-    * If PortalID is wrong/missing
-    * If all FieldTypes are covered
-    * If receiving/sending API data fails
