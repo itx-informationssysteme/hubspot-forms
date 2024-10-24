@@ -2,9 +2,11 @@
 
 namespace Itx\HubspotForms\Controller;
 
+use Exception;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use Itx\HubspotForms\Service\HubspotService;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 class FormController extends ActionController
 {
@@ -31,9 +33,17 @@ class FormController extends ActionController
     {
         $this->formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
 
-        $form = $this->hubspotService->fetchHubspotFormData($this->accessToken, self::URL . $this->formID);
-
-        $this->view->assign('form', $form);
+        try {
+            $form = $this->hubspotService->fetchHubspotFormData($this->accessToken, self::URL . $this->formID);
+            $this->view->assign('form', $form);
+        } catch (Exception $e) {
+            $this->addFlashMessage(
+                'Please set your Access Token and Portal ID in the Extension settings',
+                'Warning',
+                FlashMessage::WARNING,
+                false
+            );
+        }
         return $this->htmlResponse();
     }
 
@@ -43,7 +53,7 @@ class FormController extends ActionController
 
         $arguments = $this->request->getArguments();
         $form = $this->hubspotService->fetchHubspotFormData($this->accessToken, self::URL . $this->formID);
-       
+
         // Add fields to response
         foreach ($form['fieldGroups'] as $fieldGroup) {
             foreach ($fieldGroup['fields'] as $field) {
@@ -51,14 +61,14 @@ class FormController extends ActionController
                     $message['fields'][] = ['objectTypeId' => $field['objectTypeId'], 'name' => $field['name'], 'value' => array_key_exists($field['name'], $arguments) ? $arguments[$field['name']] : ''];
                 } else {
                     foreach ($field['options'] as $option) {
-                        if($arguments[$option['value']]){
+                        if ($arguments[$option['value']]) {
                             $message['fields'][] = ['objectTypeId' =>  $field['objectTypeId'], 'name' => $field['name'], 'value' => $option['value']];
                         }
                     }
                 }
             }
         }
-        
+
         // Add legalConsentOptions to response
         switch ($form['legalConsentOptions']['type']) {
             case 'legitimate_interest':
