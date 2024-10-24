@@ -39,10 +39,10 @@ class Formloader {
             );
         }
         $content = $response->getBody()->getContents();
-        $forms = json_decode($content);
+        $forms = json_decode($content, true);
 
-        foreach($forms->results as $form){
-            $config['items'][] = [$form->name, $form->id];
+        foreach($forms['results'] as $form){
+            $config['items'][] = [$form['name'], $form['id']];
         }
     }
 }

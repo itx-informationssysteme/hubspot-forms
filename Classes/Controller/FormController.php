@@ -45,14 +45,14 @@ class FormController extends ActionController
         $form = $this->hubspotService->fetchHubspotFormData($this->accessToken, self::URL . $this->formID);
        
         // Add fields to response
-        foreach ($form->fieldGroups as $fieldGroup) {
-            foreach ($fieldGroup->fields as $field) {
-                if ($field->fieldType != 'multiple_checkboxes') {
-                    $message['fields'][] = ['objectTypeId' => $field->objectTypeId, 'name' => $field->name, 'value' => array_key_exists($field->name, $arguments) ? $arguments[$field->name] : ''];
+        foreach ($form['fieldGroups'] as $fieldGroup) {
+            foreach ($fieldGroup['fields'] as $field) {
+                if ($field['fieldType'] != 'multiple_checkboxes') {
+                    $message['fields'][] = ['objectTypeId' => $field['objectTypeId'], 'name' => $field['name'], 'value' => array_key_exists($field['name'], $arguments) ? $arguments[$field['name']] : ''];
                 } else {
-                    foreach ($field->options as $option) {
-                        if($arguments[$option->value]){
-                            $message['fields'][] = ['objectTypeId' => $field->objectTypeId, 'name' => $field->name, 'value' => $option->value];
+                    foreach ($field['options'] as $option) {
+                        if($arguments[$option['value']]){
+                            $message['fields'][] = ['objectTypeId' =>  $field['objectTypeId'], 'name' => $field['name'], 'value' => $option['value']];
                         }
                     }
                 }
@@ -60,25 +60,25 @@ class FormController extends ActionController
         }
         
         // Add legalConsentOptions to response
-        switch ($form->legalConsentOptions->type) {
+        switch ($form['legalConsentOptions']['type']) {
             case 'legitimate_interest':
                 $message['legalConsentOptions']['legitimateInterest']['value'] = true;
-                $message['legalConsentOptions']['legitimateInterest']['subscriptionTypeId'] = $form->legalConsentOptions->subscriptionTypeIds[0]; // Response only expects one id, so take the first, might have to change
-                $message['legalConsentOptions']['legitimateInterest']['legalBasis'] = strtoupper($form->legalConsentOptions->lawfulBasis);
-                $message['legalConsentOptions']['legitimateInterest']['text'] = $form->legalConsentOptions->privacyText;
+                $message['legalConsentOptions']['legitimateInterest']['subscriptionTypeId'] = $form['legalConsentOptions']['subscriptionTypeIds'][0]; // Response only expects one id, so take the first, might have to change
+                $message['legalConsentOptions']['legitimateInterest']['legalBasis'] = strtoupper($form['legalConsentOptions']['lawfulBasis']);
+                $message['legalConsentOptions']['legitimateInterest']['text'] = $form['legalConsentOptions']['privacyText'];
                 break;
             case 'implicit_consent_to_process':
                 $message['legalConsentOptions']['consent']['consentToProcess'] = true;
-                $message['legalConsentOptions']['consent']['text'] = $form->legalConsentOptions->communicationConsentText;
-                foreach ($form->legalConsentOptions->communicationsCheckboxes as $checkbox) {
-                    $message['legalConsentOptions']['consent']['communications'][] = array('value' => $arguments['legalConsentOptions/' . $checkbox->subscriptionTypeId] != '', 'subscriptionTypeId' => $checkbox->subscriptionTypeId, 'text' => $checkbox->label);
+                $message['legalConsentOptions']['consent']['text'] = $form['legalConsentOptions']['communicationConsentText'];
+                foreach ($form['legalConsentOptions']['communicationsCheckboxes'] as $checkbox) {
+                    $message['legalConsentOptions']['consent']['communications'][] = array('value' => $arguments['legalConsentOptions/' . $checkbox['subscriptionTypeId']] != '', 'subscriptionTypeId' => $checkbox['subscriptionTypeId'], 'text' => $checkbox['label']);
                 }
                 break;
             case 'explicit_consent_to_process':
                 $message['legalConsentOptions']['consent']['consentToProcess'] = $arguments['consentToProcess'] != '';
-                $message['legalConsentOptions']['consent']['text'] = $form->legalConsentOptions->communicationConsentText;
-                foreach ($form->legalConsentOptions->communicationsCheckboxes as $checkbox) {
-                    $message['legalConsentOptions']['consent']['communications'][] = array('value' => $arguments['legalConsentOptions/' . $checkbox->subscriptionTypeId] != '', 'subscriptionTypeId' => $checkbox->subscriptionTypeId, 'text' => $checkbox->label);
+                $message['legalConsentOptions']['consent']['text'] = $form['legalConsentOptions']['communicationConsentText'];
+                foreach ($form['legalConsentOptions']['communicationsCheckboxes'] as $checkbox) {
+                    $message['legalConsentOptions']['consent']['communications'][] = array('value' => $arguments['legalConsentOptions/' . $checkbox['subscriptionTypeId']] != '', 'subscriptionTypeId' => $checkbox['subscriptionTypeId'], 'text' => $checkbox['label']);
                 }
                 break;
             case 'none':

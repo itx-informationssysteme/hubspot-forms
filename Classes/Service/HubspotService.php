@@ -12,7 +12,7 @@ class HubspotService
         private RequestFactory $requestFactory,
     ) {}
 
-    public function fetchHubspotFormData(string $AccessToken, string $URL)
+    public function fetchHubspotFormData(string $AccessToken, string $URL): array
     {
         $additionalOptions = [
             'headers' => ['authorization' => $AccessToken],
@@ -37,7 +37,7 @@ class HubspotService
             );
         }
         $content = $response->getBody()->getContents();
-        $result = json_decode($content);
+        $result = json_decode($content, true);
 
         return $result;
     }
