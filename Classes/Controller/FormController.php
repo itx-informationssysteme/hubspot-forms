@@ -51,7 +51,9 @@ class FormController extends ActionController
                     $message['fields'][] = ['objectTypeId' => $field->objectTypeId, 'name' => $field->name, 'value' => $arguments[$field->name]];
                 } else {
                     foreach ($field->options as $option) {
-                        $message['fields'][] = ['objectTypeId' => $field->objectTypeId, 'name' => $field->name, 'value' => $option->value];
+                        if($arguments[$option->value]){
+                            $message['fields'][] = ['objectTypeId' => $field->objectTypeId, 'name' => $field->name, 'value' => $option->value];
+                        }
                     }
                 }
             }
