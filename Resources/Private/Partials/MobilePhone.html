@@ -1,6 +1,6 @@
 <div style="display: inline-block">
     <label style="display: block" for="{id}/{field.name}">
-        <f:format.stripTags>{field.label}</f:format.stripTags>
+        <f:format.html>{field.label}</f:format.html>
     </label>
     <f:form.textfield style="display: inline-block" id="{id}/{field.name}" name="{field.name}"
         value="{field.defaultValue}" required="{field.required}" type="tel" placeholder="{field.placeholder}" />

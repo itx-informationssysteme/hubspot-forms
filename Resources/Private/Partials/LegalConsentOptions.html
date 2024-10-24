@@ -6,28 +6,28 @@
         required="{f:if(condition: field.required, then: 'required', else: '')}" value="{checkbox.subscriptionTypeId}"
         style="appearance: auto" name="legalConsentOptions/{checkbox.subscriptionTypeId}" />
     <label for="{id}/{checkbox.subscriptionTypeId}">
-        <f:format.stripTags>{checkbox.label}</f:format.stripTags>
+        <f:format.html>{checkbox.label}</f:format.html>
     </label>
     <br><br>
 </f:for>
 <f:if condition="{legalConsentOptions.type} == 'implicit_consent_to_process'">
     <p>
-        <f:format.stripTags>{legalConsentOptions.privacyText}</f:format.stripTags>
+        <f:format.html>{legalConsentOptions.privacyText}</f:format.html>
     </p>
     <p>
-        <f:format.stripTags>{legalConsentOptions.consentToProcessText}</f:format.stripTags>
+        <f:format.html>{legalConsentOptions.consentToProcessText}</f:format.html>
     </p>
 </f:if>
 <f:if condition="{legalConsentOptions.type} == 'explicit_consent_to_process'">
     <p>
-        <f:format.stripTags>{legalConsentOptions.consentToProcessText}</f:format.stripTags>
+        <f:format.html>{legalConsentOptions.consentToProcessText}</f:format.html>
     </p>
     <f:form.checkbox id="consentToProcess" required="true" value="true" style="appearance: auto"
         name="consentToProcess" />
     <label for="consentToProcess">
-        <f:format.stripTags>{legalConsentOptions.consentToProcessCheckboxLabel}</f:format.stripTags>
+        <f:format.html>{legalConsentOptions.consentToProcessCheckboxLabel}</f:format.html>
     </label>
     <p>
-        <f:format.stripTags>{legalConsentOptions.privacyText}</f:format.stripTags>
+        <f:format.html>{legalConsentOptions.privacyText}</f:format.html>
     </p>
 </f:if>
