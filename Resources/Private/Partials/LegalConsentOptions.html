@@ -11,16 +11,23 @@
     <br><br>
 </f:for>
 <f:if condition="{legalConsentOptions.type} == 'implicit_consent_to_process'">
-    <p>{legalConsentOptions.privacyText}</p>
-    <p>{legalConsentOptions.consentToProcessText}</p>
+    <p>
+        <f:format.stripTags>{legalConsentOptions.privacyText}</f:format.stripTags>
+    </p>
+    <p>
+        <f:format.stripTags>{legalConsentOptions.consentToProcessText}</f:format.stripTags>
+    </p>
 </f:if>
 <f:if condition="{legalConsentOptions.type} == 'explicit_consent_to_process'">
-    <p>{legalConsentOptions.consentToProcessText}</p>
-    <f:form.checkbox id="consentToProcess"
-        required="true" value="true"
-        style="appearance: auto" name="consentToProcess" />
+    <p>
+        <f:format.stripTags>{legalConsentOptions.consentToProcessText}</f:format.stripTags>
+    </p>
+    <f:form.checkbox id="consentToProcess" required="true" value="true" style="appearance: auto"
+        name="consentToProcess" />
     <label for="consentToProcess">
         <f:format.stripTags>{legalConsentOptions.consentToProcessCheckboxLabel}</f:format.stripTags>
     </label>
-    <p>{legalConsentOptions.privacyText}</p>
+    <p>
+        <f:format.stripTags>{legalConsentOptions.privacyText}</f:format.stripTags>
+    </p>
 </f:if>

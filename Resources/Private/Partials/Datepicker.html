@@ -1,5 +1,7 @@
 <div style="display: inline-block">
-    <label style="display: block" for="{id}/{field.name}">{field.label}</label>
+    <label style="display: block" for="{id}/{field.name}">
+        <f:format.stripTags>{field.label}</f:format.stripTags>
+    </label>
     <f:form.textfield style="display: inline-block" id="{}" type="date" name="{field.name}"
         required="{field.required}" />
 </div>

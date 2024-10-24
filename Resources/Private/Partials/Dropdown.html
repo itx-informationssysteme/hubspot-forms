@@ -1,5 +1,7 @@
 <div style="display: inline-block">
-    <label style="display: block" for="{id}/{field.name}">{field.label}</label>
+    <label style="display: block" for="{id}/{field.name}">
+        <f:format.stripTags>{field.label}</f:format.stripTags>
+    </label>
     <f:form.select style="display: inline-block" id="{id}/{field.name}" name="{field.name}">
         <f:for each="{field.options}" as="option">
             <f:form.select.option value="{option.value}">{option.label}</f:form.select.option>

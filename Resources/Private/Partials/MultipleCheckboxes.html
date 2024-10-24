@@ -1,5 +1,7 @@
 <div>
-    <label>{field.label}</label>
+    <label>
+        <f:format.stripTags>{field.label}</f:format.stripTags>
+    </label>
     <f:for each="{field.options}" as="option">
         <br>
         <f:form.checkbox id="{id}/{field.name}/{option.label}" name="{option.value}" value="true"
