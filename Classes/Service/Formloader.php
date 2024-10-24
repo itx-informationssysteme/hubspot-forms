@@ -6,7 +6,8 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class Formloader {
+class Formloader
+{
 
     public function loadForms(array &$config)
     {
@@ -41,7 +42,7 @@ class Formloader {
         $content = $response->getBody()->getContents();
         $forms = json_decode($content, true);
 
-        foreach($forms['results'] as $form){
+        foreach ($forms['results'] as $form) {
             $config['items'][] = [$form['name'], $form['id']];
         }
     }
