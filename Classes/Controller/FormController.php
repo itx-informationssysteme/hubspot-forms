@@ -43,12 +43,12 @@ class FormController extends ActionController
 
         $arguments = $this->request->getArguments();
         $form = $this->hubspotService->fetchHubspotFormData($this->accessToken, self::URL . $this->formID);
-
+       
         // Add fields to response
         foreach ($form->fieldGroups as $fieldGroup) {
             foreach ($fieldGroup->fields as $field) {
                 if ($field->fieldType != 'multiple_checkboxes') {
-                    $message['fields'][] = ['objectTypeId' => $field->objectTypeId, 'name' => $field->name, 'value' => $arguments[$field->name]];
+                    $message['fields'][] = ['objectTypeId' => $field->objectTypeId, 'name' => $field->name, 'value' => array_key_exists($field->name, $arguments) ? $arguments[$field->name] : ''];
                 } else {
                     foreach ($field->options as $option) {
                         if($arguments[$option->value]){
@@ -58,6 +58,7 @@ class FormController extends ActionController
                 }
             }
         }
+        
         // Add legalConsentOptions to response
         switch ($form->legalConsentOptions->type) {
             case 'legitimate_interest':

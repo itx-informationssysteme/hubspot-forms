@@ -5,7 +5,7 @@
     <f:for each="{field.options}" as="option">
         <br>
         <f:form.radio id="{id}/{field.name}/{option.label}" name="{field.name}" value="{option.value}"
-            style="appearance: auto" checked="true" />
+            style="appearance: auto" />
         <label for="{id}/{field.name}/{option.label}">{option.label}</label>
     </f:for>
 </div>
