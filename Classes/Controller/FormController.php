@@ -38,7 +38,7 @@ class FormController extends ActionController
             $this->view->assign('form', $form);
         } catch (Exception $e) {
             $this->addFlashMessage(
-                'Please set your Access Token and Portal ID in the Extension settings',
+                'Please set your Access Token in the Extension settings',
                 'Warning',
                 FlashMessage::WARNING,
                 false
@@ -102,12 +102,20 @@ class FormController extends ActionController
         // Send to HubSpot
         $postURL = 'https://api.hsforms.com/submissions/v3/integration/submit/' . $this->portalID . '/' . $this->formID;
 
-        $response = $this->hubspotService->sendForm($message, $postURL);
-
-        $this->view->assignMultiple([
-            'form' => $form,
-            'response' => $response // In case we want to handle a failed send
-        ]);
+        try {
+            $response = $this->hubspotService->sendForm($message, $postURL);
+            $this->view->assignMultiple([
+                'form' => $form,
+                'response' => $response // In case we want to handle a failed send
+            ]);
+        } catch (Exception $e) {
+            $this->addFlashMessage(
+                'Please set your PortalID in the Extension settings',
+                'Warning',
+                FlashMessage::WARNING,
+                false
+            );
+        }
         return $this->htmlResponse();
     }
 }
