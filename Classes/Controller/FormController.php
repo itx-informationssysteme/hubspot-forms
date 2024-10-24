@@ -8,14 +8,13 @@ use TYPO3\CMS\Core\Http\RequestFactory;
 use Itx\HubspotForms\Service\HubspotService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 class FormController extends ActionController
 {
-    private string $portalID;
-
-    private string $formID;
-
     private const URL = 'https://api.hubapi.com/marketing/v3/forms/';
+
+    private string $portalID;
 
     private string $accessToken;
 
@@ -33,10 +32,10 @@ class FormController extends ActionController
 
     public function displayAction()
     {
-        $this->formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
+        $formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
 
         try {
-            $form = $this->hubspotService->fetchHubspotFormData($this->accessToken, self::URL . $this->formID);
+            $form = $this->hubspotService->fetchHubspotFormData($this->accessToken, self::URL . $formID);
             $this->view->assign('form', $form);
         } catch (Exception $e) {
             $this->addFlashMessage(
@@ -52,10 +51,10 @@ class FormController extends ActionController
 
     public function submitAction()
     {
-        $this->formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
+        $formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
 
         $arguments = $this->request->getArguments();
-        $form = $this->hubspotService->fetchHubspotFormData($this->accessToken, self::URL . $this->formID);
+        $form = $this->hubspotService->fetchHubspotFormData($this->accessToken, self::URL . $formID);
 
         // Add fields to response
         foreach ($form['fieldGroups'] as $fieldGroup) {
@@ -73,7 +72,9 @@ class FormController extends ActionController
         }
 
         // Add legalConsentOptions to response
-        switch ($form['legalConsentOptions']['type']) {
+        $legalConsentType = $form['legalConsentOptions']['type'];
+
+        switch ($legalConsentType) {
             case 'legitimate_interest':
                 $message['legalConsentOptions']['legitimateInterest']['value'] = true;
                 $message['legalConsentOptions']['legitimateInterest']['subscriptionTypeId'] = $form['legalConsentOptions']['subscriptionTypeIds'][0]; // Response only expects one id, so take the first, might have to change
@@ -88,7 +89,7 @@ class FormController extends ActionController
                 }
                 break;
             case 'explicit_consent_to_process':
-                $message['legalConsentOptions']['consent']['consentToProcess'] = $arguments['consentToProcess'] != '';
+                $message['legalConsentOptions']['consent']['consentToProcess'] = $arguments['consentToProcess'] !== '';
                 $message['legalConsentOptions']['consent']['text'] = $form['legalConsentOptions']['communicationConsentText'];
                 foreach ($form['legalConsentOptions']['communicationsCheckboxes'] as $checkbox) {
                     $message['legalConsentOptions']['consent']['communications'][] = array('value' => $arguments['legalConsentOptions/' . $checkbox['subscriptionTypeId']] != '', 'subscriptionTypeId' => $checkbox['subscriptionTypeId'], 'text' => $checkbox['label']);
@@ -97,13 +98,16 @@ class FormController extends ActionController
             case 'none':
                 // $message->legalConsentOptions = null;
                 break;
+            default:
+                throw new RuntimeException("Invalid LegalConsentOption type: $legalConsentType");
+                break;
         }
 
         // Add additional context params
-        $message['context']['pageUri'] = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUrl();
+        $message['context']['pageUri'] = $this->request->getHeaderLine('referer');
 
         // Send to HubSpot
-        $postURL = 'https://api.hsforms.com/submissions/v3/integration/submit/' . $this->portalID . '/' . $this->formID;
+        $postURL = 'https://api.hsforms.com/submissions/v3/integration/submit/' . $this->portalID . '/' . $formID;
 
         try {
             $response = $this->hubspotService->sendForm($message, $postURL);
@@ -120,6 +124,10 @@ class FormController extends ActionController
             );
             $this->logger->error('Error fetching data from HubSpot API', ['error' => $e]);
         }
+        if($form['configuration']['postSubmitAction']['type'] === 'redirect_url') {
+            $this->redirectToUri($form['configuration']['postSubmitAction']['value']);
+        }
+
         return $this->htmlResponse();
     }
 }

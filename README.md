@@ -21,3 +21,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] = 'Your P
 
 ## TODO
 * Neutral option for select
+* Mark mandatory fields
+* Switchpartial
+* Move URL variables to HubSpotService 
