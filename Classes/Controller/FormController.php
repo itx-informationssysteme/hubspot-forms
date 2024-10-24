@@ -7,6 +7,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use Itx\HubspotForms\Service\HubspotService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use Psr\Log\LoggerInterface;
 
 class FormController extends ActionController
 {
@@ -22,6 +23,7 @@ class FormController extends ActionController
 
     public function __construct(
         private RequestFactory $requestFactory,
+        private readonly LoggerInterface $logger,
         HubspotService $hubspotService,
     ) {
         $this->hubspotService = $hubspotService;
@@ -40,9 +42,10 @@ class FormController extends ActionController
             $this->addFlashMessage(
                 'Please set your Access Token in the Extension settings',
                 'Warning',
-                FlashMessage::WARNING,
+                FlashMessage::ERROR,
                 false
             );
+            $this->logger->error('Error fetching data from HubSpot API', ['error' => $e]);
         }
         return $this->htmlResponse();
     }
@@ -112,9 +115,10 @@ class FormController extends ActionController
             $this->addFlashMessage(
                 'Please set your PortalID in the Extension settings',
                 'Warning',
-                FlashMessage::WARNING,
+                FlashMessage::ERROR,
                 false
             );
+            $this->logger->error('Error fetching data from HubSpot API', ['error' => $e]);
         }
         return $this->htmlResponse();
     }
