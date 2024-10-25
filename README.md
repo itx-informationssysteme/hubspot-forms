@@ -17,7 +17,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] = 'Your P
 * After selecting your form, switch over to the frontend to see it all loaded in
 
 ## Styling 
-* Every field type of the forms is rendered by a partial, so if you want to style your forms we recommend overwriting our basic styling in the partial files, located under `Resources/Private/Partials` in the extension directory
+* Every field type of the forms is rendered by a partial, if you want to individually style your form fields, overwrite the partials and add your own styling
 
 ## Known Issues
 ### Multiple Multiple-Checkboxes
