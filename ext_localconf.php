@@ -17,3 +17,6 @@ ExtensionUtility::configurePlugin(
     // non-cacheable actions
     [FormController::class => 'display, submit'],
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['hubspot_form_cache']
+    ??= [];

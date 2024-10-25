@@ -4,6 +4,7 @@ namespace Itx\HubspotForms\Service;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
 class HubspotService
 {
@@ -12,8 +13,11 @@ class HubspotService
 
     private string $accessToken;
 
+    private string $formID;
+
     public function __construct(
         private RequestFactory $requestFactory,
+        private readonly FrontendInterface $cache,
     ) {
         $this->portalID = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] ?? '';
         $this->accessToken = 'Bearer ' . $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['accessToken'] ?? '';
@@ -21,7 +25,34 @@ class HubspotService
 
     public function fetchHubspotFormData(string $formID): array
     {
-        $URL = 'https://api.hubapi.com/marketing/v3/forms/' . $formID;
+        $this->formID = $formID;
+
+        return $this->getCachedValue(md5("hubspot_form_cache/$formID/{$this->accessToken}"), ['hubspot_form'], null); 
+    }
+
+    public function sendForm(array $message, string $formID): ResponseInterface
+    {
+        $URL = 'https://api.hsforms.com/submissions/v3/integration/submit/' . $this->portalID . '/' . $formID;
+
+        return $this->requestFactory->request($URL, 'POST', ['body' => json_encode($message), 'headers' => ['Content-Type' => 'application/json']]);
+    }
+
+    private function getCachedValue(string $cacheIdentifier, array $tags, int|null $lifetime): array
+    {
+        // If value is false, it has not been cached
+        $value = $this->cache->get($cacheIdentifier);
+        if ($value === false) {
+            // Store the data in cache
+            $value = $this->getFormData();
+            $this->cache->set($cacheIdentifier, $value, $tags, $lifetime);
+        }
+
+        return $value;
+    }
+
+    private function getFormData(): array
+    {
+        $URL = 'https://api.hubapi.com/marketing/v3/forms/' . $this->formID;
 
         $additionalOptions = [
             'headers' => ['authorization' => $this->accessToken],
@@ -49,12 +80,5 @@ class HubspotService
         $result = json_decode($content, true);
 
         return $result;
-    }
-
-    public function sendForm(array $message, string $formID): ResponseInterface
-    {
-        $URL = 'https://api.hsforms.com/submissions/v3/integration/submit/' . $this->portalID . '/' . $formID;
-
-        return $this->requestFactory->request($URL, 'POST', ['body' => json_encode($message), 'headers' => ['Content-Type' => 'application/json']]);
     }
 }
