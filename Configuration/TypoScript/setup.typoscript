@@ -1,0 +1,19 @@
+plugin.tx_hubspot_forms {
+
+	view {
+		templateRootPaths {
+			0 = EXT:hubspot_forms/Resources/Private/Templates/
+			1 = {$plugin.tx_hubspot_forms.view.templateRootPath}
+		}
+
+		partialRootPaths {
+			0 = EXT:hubspot_forms/Resources/Private/Partials/
+			1 = {$plugin.tx_hubspot_forms.view.partialRootPath}
+		}
+
+		layoutRootPaths {
+			0 = EXT:hubspot_forms/Resources/Private/Layouts/
+			1 = {$plugin.tx_hubspot_forms.view.layoutRootPath}
+		}
+	}
+}
