@@ -1,6 +1,6 @@
 <div style="display: inline-block">
     <label style="display: block" for="{id}/{field.name}">
-        <f:format.html>{field.label}{f:if(condition: field.required, then: ' *', else: '')}</f:format.html>
+        <f:format.stripTags>{field.label}{f:if(condition: field.required, then: ' *', else: '')}</f:format.stripTags>
     </label>
     <f:form.textfield style="display: inline-block" id="{id}/{field.name}" name="{field.name}"
         value="{field.defaultValue}" required="{field.required}" type="tel" placeholder="{field.placeholder}" />

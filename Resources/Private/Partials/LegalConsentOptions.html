@@ -3,31 +3,33 @@
 </p>
 <f:for each="{legalConsentOptions.communicationsCheckboxes}" as="checkbox">
     <f:form.checkbox id="{id}/{checkbox.subscriptionTypeId}"
-        required="{f:if(condition: checkbox.required, then: 'required', else: '')}" value="{checkbox.subscriptionTypeId}"
-        style="appearance: auto" name="legalConsentOptions/{checkbox.subscriptionTypeId}" />
+        required="{f:if(condition: checkbox.required, then: 'required', else: '')}"
+        value="{checkbox.subscriptionTypeId}" style="appearance: auto"
+        name="legalConsentOptions/{checkbox.subscriptionTypeId}" />
     <label for="{id}/{checkbox.subscriptionTypeId}">
-        <f:format.html>{checkbox.label}{f:if(condition: checkbox.required, then: ' *', else: '')}</f:format.html>
+        <f:format.stripTags>{checkbox.label}{f:if(condition: checkbox.required, then: ' *', else: '')}
+        </f:format.stripTags>
     </label>
     <br><br>
 </f:for>
 <f:if condition="{legalConsentOptions.type} == 'implicit_consent_to_process'">
     <p>
-        <f:format.html>{legalConsentOptions.privacyText}</f:format.html>
+        <f:format.stripTags>{legalConsentOptions.privacyText}</f:format.stripTags>
     </p>
     <p>
-        <f:format.html>{legalConsentOptions.consentToProcessText}</f:format.html>
+        <f:format.stripTags>{legalConsentOptions.consentToProcessText}</f:format.stripTags>
     </p>
 </f:if>
 <f:if condition="{legalConsentOptions.type} == 'explicit_consent_to_process'">
     <p>
-        <f:format.html>{legalConsentOptions.consentToProcessText}</f:format.html>
+        <f:format.stripTags>{legalConsentOptions.consentToProcessText}</f:format.stripTags>
     </p>
     <f:form.checkbox id="consentToProcess" required="true" value="true" style="appearance: auto"
         name="consentToProcess" />
     <label for="consentToProcess">
-        <f:format.html>{legalConsentOptions.consentToProcessCheckboxLabel} *</f:format.html>
+        <f:format.stripTags>{legalConsentOptions.consentToProcessCheckboxLabel} *</f:format.stripTags>
     </label>
     <p>
-        <f:format.html>{legalConsentOptions.privacyText}</f:format.html>
+        <f:format.stripTags>{legalConsentOptions.privacyText}</f:format.stripTags>
     </p>
 </f:if>
