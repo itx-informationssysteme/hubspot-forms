@@ -8,8 +8,6 @@ use TYPO3\CMS\Core\Http\RequestFactory;
 class HubspotService
 {
 
-    private string $URL = 'https://api.hubapi.com/marketing/v3/forms/';
-
     private string $portalID;
 
     private string $accessToken;
@@ -23,7 +21,7 @@ class HubspotService
 
     public function fetchHubspotFormData(string $formID): array
     {
-        $this->URL = $this->URL . $formID;
+        $URL = 'https://api.hubapi.com/marketing/v3/forms/' . $formID;
 
         $additionalOptions = [
             'headers' => ['authorization' => $this->accessToken],
@@ -31,7 +29,7 @@ class HubspotService
 
         // Get a PSR-7-compliant response object
         $response = $this->requestFactory->request(
-            $this->URL,
+            $URL,
             'GET',
             $additionalOptions,
         );
@@ -53,7 +51,7 @@ class HubspotService
         return $result;
     }
 
-    public function sendForm(array $message, $formID): ResponseInterface
+    public function sendForm(array $message, string $formID): ResponseInterface
     {
         $URL = 'https://api.hsforms.com/submissions/v3/integration/submit/' . $this->portalID . '/' . $formID;
 
