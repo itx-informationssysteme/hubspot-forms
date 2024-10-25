@@ -8,19 +8,30 @@ use TYPO3\CMS\Core\Http\RequestFactory;
 class HubspotService
 {
 
+    private string $URL = 'https://api.hubapi.com/marketing/v3/forms/';
+
+    private string $portalID;
+
+    private string $accessToken;
+
     public function __construct(
         private RequestFactory $requestFactory,
-    ) {}
+    ) {
+        $this->portalID = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] ?? '';
+        $this->accessToken = 'Bearer ' . $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['accessToken'] ?? '';
+    }
 
-    public function fetchHubspotFormData(string $AccessToken, string $URL): array
+    public function fetchHubspotFormData(string $formID): array
     {
+        $this->URL = $this->URL . $formID;
+
         $additionalOptions = [
-            'headers' => ['authorization' => $AccessToken],
+            'headers' => ['authorization' => $this->accessToken],
         ];
 
         // Get a PSR-7-compliant response object
         $response = $this->requestFactory->request(
-            $URL,
+            $this->URL,
             'GET',
             $additionalOptions,
         );
@@ -42,8 +53,10 @@ class HubspotService
         return $result;
     }
 
-    public function sendForm(array $message, $URL): ResponseInterface
+    public function sendForm(array $message, $formID): ResponseInterface
     {
+        $URL = 'https://api.hsforms.com/submissions/v3/integration/submit/' . $this->portalID . '/' . $formID;
+
         return $this->requestFactory->request($URL, 'POST', ['body' => json_encode($message), 'headers' => ['Content-Type' => 'application/json']]);
     }
 }

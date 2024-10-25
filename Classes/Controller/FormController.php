@@ -12,12 +12,6 @@ use RuntimeException;
 
 class FormController extends ActionController
 {
-    private const URL = 'https://api.hubapi.com/marketing/v3/forms/';
-
-    private string $portalID;
-
-    private string $accessToken;
-
     private HubspotService $hubspotService;
 
     public function __construct(
@@ -26,8 +20,6 @@ class FormController extends ActionController
         HubspotService $hubspotService,
     ) {
         $this->hubspotService = $hubspotService;
-        $this->portalID = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] ?? '';
-        $this->accessToken = 'Bearer ' . $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['accessToken'] ?? '';
     }
 
     public function displayAction()
@@ -35,7 +27,7 @@ class FormController extends ActionController
         $formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
 
         try {
-            $form = $this->hubspotService->fetchHubspotFormData($this->accessToken, self::URL . $formID);
+            $form = $this->hubspotService->fetchHubspotFormData($formID);
             $this->view->assign('form', $form);
         } catch (Exception $e) {
             $this->addFlashMessage(
@@ -54,7 +46,7 @@ class FormController extends ActionController
         $formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
 
         $arguments = $this->request->getArguments();
-        $form = $this->hubspotService->fetchHubspotFormData($this->accessToken, self::URL . $formID);
+        $form = $this->hubspotService->fetchHubspotFormData($formID);
 
         // Add fields to response
         foreach ($form['fieldGroups'] as $fieldGroup) {
@@ -107,10 +99,8 @@ class FormController extends ActionController
         $message['context']['pageUri'] = $this->request->getHeaderLine('referer');
 
         // Send to HubSpot
-        $postURL = 'https://api.hsforms.com/submissions/v3/integration/submit/' . $this->portalID . '/' . $formID;
-
         try {
-            $response = $this->hubspotService->sendForm($message, $postURL);
+            $response = $this->hubspotService->sendForm($message, $formID);
             $this->view->assignMultiple([
                 'form' => $form,
                 'response' => $response // In case we want to handle a failed send
@@ -124,7 +114,7 @@ class FormController extends ActionController
             );
             $this->logger->error('Error fetching data from HubSpot API', ['error' => $e]);
         }
-        if($form['configuration']['postSubmitAction']['type'] === 'redirect_url') {
+        if ($form['configuration']['postSubmitAction']['type'] === 'redirect_url') {
             $this->redirectToUri($form['configuration']['postSubmitAction']['value']);
         }
 
