@@ -8,42 +8,7 @@
                 <div style="display: flex; margin: 20px 0px">
                     <f:for each="{fieldGroup.fields}" as="field">
                         <div style="margin: 0px 10px">
-                            <f:switch expression="{field.fieldType}">
-                                <f:case value="email">{f:render(partial:'Email', arguments: {field: field, id:
-                                    form.id})}
-                                </f:case>
-                                <f:case value="phone">{f:render(partial:'Phone', arguments: {field: field, id:
-                                    form.id})}
-                                </f:case>
-                                <f:case value="mobile_phone">{f:render(partial:'MobilePhone', arguments: {field: field,
-                                    id:
-                                    form.id})}
-                                </f:case>
-                                <f:case value="single_line_text">{f:render(partial:'SingleLineText', arguments: {field:
-                                    field,
-                                    id: form.id})}
-                                </f:case>
-                                <f:case value="multi_line_text">{f:render(partial:'MultiLineText', arguments: {field:
-                                    field,
-                                    id:
-                                    form.id})}
-                                </f:case>
-                                <f:case value="single_checkbox">{f:render(partial:'SingleCheckbox', arguments: {field:
-                                    field,
-                                    id: form.id})}
-                                </f:case>
-                                <f:case value="multiple_checkboxes">{f:render(partial:'MultipleCheckboxes', arguments:
-                                    {field:
-                                    field, id: form.id})}</f:case>
-                                <f:case value="radio">{f:render(partial:'Radio', arguments: {field: field, id:
-                                    form.id})}
-                                </f:case>
-                                <f:case value="dropdown">{f:render(partial:'Dropdown', arguments: {field: field, id:
-                                    form.id})}
-                                </f:case>
-                                <f:case value="datepicker">{f:render(partial:'Datepicker', arguments: {field: field, id:
-                                    form.id})}</f:case>
-                            </f:switch>
+                            {f:render(partial:'Switch', arguments: {field: field, form: form})}
                         </div>
                     </f:for>
                 </div>
