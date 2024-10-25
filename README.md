@@ -1,4 +1,4 @@
-# Hubspot Forms Extension for Typo3
+# Hubspot Forms Extension for TYPO3
 This extension will help displaying Hubspot forms in our pages by dynamically loading in any given Form using your FormID, PortalID and Access Token using the HubSpot API
 
 ## Installation (Composer)
