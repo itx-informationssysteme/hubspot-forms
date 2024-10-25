@@ -1,11 +1,24 @@
 <div>
     <label>
-        <f:format.html>{field.label}</f:format.html>
+        <f:format.html>{field.label}{f:if(condition: field.required, then: ' *', else: '')}</f:format.html>
     </label>
     <f:for each="{field.options}" as="option">
         <br>
-        <f:form.checkbox id="{id}/{field.name}/{option.label}" name="{option.value}" value="true"
-            style="appearance: auto" />
+        <f:form.checkbox id="{id}/{field.name}/{option.label}" class="multipleCheckbox" name="{option.value}" value="true"
+            style="appearance: auto" required="{field.required}" />
         <label for="{id}/{field.name}/{option.label}">{option.label}</label>
     </f:for>
 </div>
+
+<script>
+    $(document).ready(function () {
+        var checkboxes = $('.multipleCheckbox');
+        checkboxes.change(function () {
+            if ($('.multipleCheckbox:checked').length > 0) {
+                checkboxes.removeAttr('required');
+            } else {
+                checkboxes.attr('required', 'required');
+            }
+        });
+    });
+</script>

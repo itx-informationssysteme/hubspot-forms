@@ -3,10 +3,10 @@
 </p>
 <f:for each="{legalConsentOptions.communicationsCheckboxes}" as="checkbox">
     <f:form.checkbox id="{id}/{checkbox.subscriptionTypeId}"
-        required="{f:if(condition: field.required, then: 'required', else: '')}" value="{checkbox.subscriptionTypeId}"
+        required="{f:if(condition: checkbox.required, then: 'required', else: '')}" value="{checkbox.subscriptionTypeId}"
         style="appearance: auto" name="legalConsentOptions/{checkbox.subscriptionTypeId}" />
     <label for="{id}/{checkbox.subscriptionTypeId}">
-        <f:format.html>{checkbox.label}</f:format.html>
+        <f:format.html>{checkbox.label}{f:if(condition: checkbox.required, then: ' *', else: '')}</f:format.html>
     </label>
     <br><br>
 </f:for>
@@ -25,7 +25,7 @@
     <f:form.checkbox id="consentToProcess" required="true" value="true" style="appearance: auto"
         name="consentToProcess" />
     <label for="consentToProcess">
-        <f:format.html>{legalConsentOptions.consentToProcessCheckboxLabel}</f:format.html>
+        <f:format.html>{legalConsentOptions.consentToProcessCheckboxLabel} *</f:format.html>
     </label>
     <p>
         <f:format.html>{legalConsentOptions.privacyText}</f:format.html>

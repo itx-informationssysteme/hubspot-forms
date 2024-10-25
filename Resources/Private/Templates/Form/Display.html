@@ -52,7 +52,7 @@
                 {f:render(partial:'LegalConsentOptions', arguments: {legalConsentOptions: form.legalConsentOptions, id:
                 form.id})}
             </div>
-            <f:form.submit style="margin: 0px 0px 10px 10px" value="{form.displayOptions.submitButtonText}" />
+            <f:form.submit style="margin: 0px 0px 10px 10px" value="{f:if(condition: form.displayOptions.submitButtonText, then: form.displayOptions.submitButtonText, else: 'Senden')}" />
         </f:form>
     </div>
 </f:if>
