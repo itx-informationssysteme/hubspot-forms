@@ -7,6 +7,9 @@
       <trans-unit id="select.placeholder">
           <source>Bitte auswählen</source>
       </trans-unit>
+      <trans-unit id="form.send">
+          <source>Abschicken</source>
+      </trans-unit>
       </body>
   </file>
 </xliff>

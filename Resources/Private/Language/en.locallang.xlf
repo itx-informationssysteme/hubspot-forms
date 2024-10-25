@@ -8,6 +8,10 @@
         <source>Bitte auswählen</source>
         <target>Please select</target>
       </trans-unit>
+      <trans-unit id="form.send">
+        <source>Abschicken</source>
+        <target>Send</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>
