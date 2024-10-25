@@ -50,13 +50,15 @@ class FormController extends ActionController
 
         // Add fields to response
         foreach ($form['fieldGroups'] as $fieldGroup) {
-            foreach ($fieldGroup['fields'] as $field) {
-                if ($field['fieldType'] != 'multiple_checkboxes') {
-                    $message['fields'][] = ['objectTypeId' => $field['objectTypeId'], 'name' => $field['name'], 'value' => array_key_exists($field['name'], $arguments) ? $arguments[$field['name']] : ''];
-                } else {
-                    foreach ($field['options'] as $option) {
-                        if ($arguments[$option['value']]) {
-                            $message['fields'][] = ['objectTypeId' =>  $field['objectTypeId'], 'name' => $field['name'], 'value' => $option['value']];
+            if (array_key_exists('fields', $fieldGroup)) {
+                foreach ($fieldGroup['fields'] as $field) {
+                    if ($field['fieldType'] != 'multiple_checkboxes') {
+                        $message['fields'][] = ['objectTypeId' => $field['objectTypeId'], 'name' => $field['name'], 'value' => array_key_exists($field['name'], $arguments) ? $arguments[$field['name']] : ''];
+                    } else {
+                        foreach ($field['options'] as $option) {
+                            if ($arguments[$option['value']]) {
+                                $message['fields'][] = ['objectTypeId' =>  $field['objectTypeId'], 'name' => $field['name'], 'value' => $option['value']];
+                            }
                         }
                     }
                 }
