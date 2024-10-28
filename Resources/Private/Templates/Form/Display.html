@@ -8,14 +8,14 @@
                 <div style="display: flex; margin: 20px 0px">
                     <f:for each="{fieldGroup.fields}" as="field">
                         <div style="margin: 0px 10px">
-                            {f:render(partial:'Switch', arguments: {field: field, form: form})}
+                            <f:render partial="Switch" arguments="{field: field, form: form}" />
                         </div>
                     </f:for>
                 </div>
             </f:for>
             <div style="margin: 0px 10px; max-width: 60%;">
-                {f:render(partial:'LegalConsentOptions', arguments: {legalConsentOptions: form.legalConsentOptions, id:
-                form.id})}
+                <f:render partial="LegalConsentOptions" arguments="{legalConsentOptions: form.legalConsentOptions, id:
+                form.id}" />
             </div>
             <f:variable name="send" value="{f:translate(key:
                 'LLL:EXT:hubspot_forms/Resources/Private/Language/locallang.xlf:select.placeholder')}"></f:variable>
