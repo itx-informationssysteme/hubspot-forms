@@ -23,4 +23,13 @@ defined('TYPO3') or die();
         // ctype
         'list'
     );
+
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+        'HubspotForms',
+        'ShowHubspotForms',
+        'LLL:EXT:hubspot_forms/Resources/Private/Language/locallang.xlf:plugin.title',
+        'hubspotforms_showhubspotforms',
+        'plugin',
+        'LLL:EXT:hubspot_forms/Resources/Private/Language/locallang.xlf:plugin.description',
+    );
 })();

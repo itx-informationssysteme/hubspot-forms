@@ -27,4 +27,4 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] = 'Your P
 
 ## TODO
 * Scroll down to thank you message after sending form
-* Add plugin to general Content Element Page
+* Extra: Add an event before submitting form

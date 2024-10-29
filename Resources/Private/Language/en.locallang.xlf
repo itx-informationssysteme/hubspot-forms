@@ -12,6 +12,14 @@
         <source>Abschicken</source>
         <target>Send</target>
       </trans-unit>
+      <trans-unit id="plugin.title">
+          <source>HubSpot Forms</source>
+          <target>Hubspot Forms</target>
+      </trans-unit>
+      <trans-unit id="plugin.description">
+          <source>Bindet Formulare aus Hubspot nahtlos ein</source>
+          <target>Adds Hubspot Forms seamlessly</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

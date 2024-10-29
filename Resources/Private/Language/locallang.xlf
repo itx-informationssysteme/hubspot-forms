@@ -10,6 +10,12 @@
       <trans-unit id="form.send">
           <source>Abschicken</source>
       </trans-unit>
+      <trans-unit id="plugin.title">
+          <source>HubSpot Forms</source>
+      </trans-unit>
+      <trans-unit id="plugin.description">
+          <source>Bindet Formulare aus Hubspot nahtlos ein</source>
+      </trans-unit>
       </body>
   </file>
 </xliff>
