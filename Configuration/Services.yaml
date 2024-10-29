@@ -14,3 +14,7 @@ services:
   Itx\HubspotForms\Service\HubspotService:
     arguments:
       $cache: '@cache.hubspot_form_cache'
+  Itx\HubspotForms\EventListener\EditFormBeforeSubmit:
+    tags:
+      - name: event.listener
+        identifier: 'myEditFormBeforeSubmit'

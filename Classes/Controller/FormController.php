@@ -9,6 +9,7 @@ use Itx\HubspotForms\Service\HubspotService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Itx\HubspotForms\Event\EditFormBeforeSubmitEvent;
 
 class FormController extends ActionController
 {
@@ -99,6 +100,13 @@ class FormController extends ActionController
 
         // Add additional context params
         $message['context']['pageUri'] = $this->request->getHeaderLine('referer');
+
+        // Change Form Data via event, if needed
+        $event = $this->eventDispatcher->dispatch(
+            new EditFormBeforeSubmitEvent($form, $message),
+        );
+        $form = $event->getForm();
+        $message = $event->getMessage();
 
         // Send to HubSpot
         try {
