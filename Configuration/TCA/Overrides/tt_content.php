@@ -9,7 +9,11 @@ defined('TYPO3') or die();
         // arbitrary, but unique plugin name (not visible in the backend)
         'ShowHubspotForms',
         // plugin title, as visible in the drop-down in the backend, use "LLL:" for localization
-        'Hubspot Forms View',
+        'LLL:EXT:hubspot_forms/Resources/Private/Language/locallang.xlf:plugin.description',
+        // icon
+        'hubspot-forms-logo',
+        // group
+        'plugin',
     );
     $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['hubspotforms_showhubspotforms'] = 'layout,select_key,recursive';
 
@@ -22,14 +26,5 @@ defined('TYPO3') or die();
         'FILE:EXT:hubspot_forms/Configuration/FlexForms/Forms.xml',
         // ctype
         'list'
-    );
-
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-        'HubspotForms',
-        'ShowHubspotForms',
-        'LLL:EXT:hubspot_forms/Resources/Private/Language/locallang.xlf:plugin.title',
-        'hubspotforms_showhubspotforms',
-        'plugin',
-        'LLL:EXT:hubspot_forms/Resources/Private/Language/locallang.xlf:plugin.description',
     );
 })();
