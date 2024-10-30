@@ -2,7 +2,6 @@
 
 namespace Itx\HubspotForms\Hook;
 
-use Exception;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -17,5 +16,13 @@ class DataHandlerHooks
 
             $cache->flushByTag('hubspot_form');
         }
+    }
+
+    public function postProcessClearCache() {
+        $container = GeneralUtility::getContainer();
+        /** @var FrontendInterface $cache */
+        $cache = $container->get('cache.hubspot_form_cache');
+
+        $cache->flushByTag('hubspot_form');
     }
 }

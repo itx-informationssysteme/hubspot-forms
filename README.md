@@ -28,8 +28,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] = 'Your P
 ## TODO
 ### General
 * Icon in CType Select
-* Add layout to default template
-* Add feature to delete cache when site cache gets cleared
 * Add TYPO3 v12 and v13 compatibility
 
 ### TYPO3 v12
