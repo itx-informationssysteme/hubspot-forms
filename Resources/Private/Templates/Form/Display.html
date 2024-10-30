@@ -4,15 +4,24 @@
         <h3 style="margin: 10px 10px">{form.name}</h3>
         <f:form name="form" object="{form}" action="submit" actionUri="{f:uri.action action:submit}#thank_you/{form.id}"
             arguments="{message: form.configuration.postSubmitAction.value}">
-            <f:for each="{form.fieldGroups}" as="fieldGroup">
-                <div style="display: flex; margin: 20px 0px">
-                    <f:for each="{fieldGroup.fields}" as="field">
-                        <div style="margin: 0px 10px">
-                            <f:render partial="Switch" arguments="{field: field, form: form}" />
+            <f:if condition="{fieldGroup.richText}">
+                <f:then>
+                    <div style="margin: 0px 10px">
+                        <f:format.html>{fieldGroup.richText}</f:format.html>
+                    </div>
+                </f:then>
+                <f:else>
+                    <f:for each="{form.fieldGroups}" as="fieldGroup">
+                        <div style="display: flex; margin: 20px 0px">
+                            <f:for each="{fieldGroup.fields}" as="field">
+                                <div style="margin: 0px 10px">
+                                    <f:render partial="Switch" arguments="{field: field, form: form}" />
+                                </div>
+                            </f:for>
                         </div>
                     </f:for>
-                </div>
-            </f:for>
+                </f:else>
+            </f:if>
             <div style="margin: 0px 10px; max-width: 60%;">
                 <f:render partial="LegalConsentOptions" arguments="{legalConsentOptions: form.legalConsentOptions, id:
                 form.id}" />
