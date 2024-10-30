@@ -6,7 +6,7 @@ use Itx\HubspotForms\Controller\FormController;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
+use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 
 defined('TYPO3') or die();
 
@@ -32,7 +32,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['hubspot_fo
                     plugins {
                         elements {
                             hubspot_forms {
-                                iconIdentifier = hubspot-forms-logo
+                                iconIdentifier = hubspot-forms-logo-png
                                 title = Hubspot Forms
                                 description = Add a HubSpot Form to your site - seamlessly
                                 tt_content_defValues {
@@ -49,6 +49,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['hubspot_fo
 ');
 
 $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-$iconRegistry->registerIcon('hubspot-forms-logo', SvgIconProvider::class, [
-    'source' => 'EXT:hubspot_forms/Resources/Public/Icons/Extension.svg'
+$iconRegistry->registerIcon('hubspot-forms-logo-png', BitmapIconProvider::class, [
+    'source' => 'EXT:hubspot_forms/Resources/Public/Icons/Extension.png'
 ]);
