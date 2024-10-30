@@ -18,7 +18,8 @@ class DataHandlerHooks
         }
     }
 
-    public function postProcessClearCache() {
+    public function postProcessClearCache()
+    {
         $container = GeneralUtility::getContainer();
         /** @var FrontendInterface $cache */
         $cache = $container->get('cache.hubspot_form_cache');

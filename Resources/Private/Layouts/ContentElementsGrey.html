@@ -2,18 +2,18 @@
 <f:spaceless>
   <f:if condition="{data.space_before_class} == ''">
     <f:then>
-      <v:variable.set name="space_before_class" value="p-t-none"  />
+      <v:variable.set name="space_before_class" value="p-t-none" />
     </f:then>
     <f:else>
-      <v:variable.set name="space_before_class" value="p-t-{data.space_before_class}"  />
+      <v:variable.set name="space_before_class" value="p-t-{data.space_before_class}" />
     </f:else>
   </f:if>
   <f:if condition="{data.space_after_class} == ''">
     <f:then>
-      <v:variable.set name="space_after_class" value="p-t-none"  />
+      <v:variable.set name="space_after_class" value="p-t-none" />
     </f:then>
     <f:else>
-      <v:variable.set name="space_after_class" value="p-b-{data.space_after_class}"  />
+      <v:variable.set name="space_after_class" value="p-b-{data.space_after_class}" />
     </f:else>
   </f:if>
   <span class="content--link" id="c{data.uid}"></span>
@@ -25,4 +25,5 @@
     </div>
   </section>
 </f:spaceless>
+
 </html>

@@ -27,7 +27,7 @@ class HubspotService
     {
         $this->formID = $formID;
 
-        return $this->getCachedValue(md5("hubspot_form_cache/$formID/{$this->accessToken}"), ['hubspot_form'], null); 
+        return $this->getCachedValue(md5("hubspot_form_cache/$formID/{$this->accessToken}"), ['hubspot_form'], null);
     }
 
     public function sendForm(array $message, string $formID): ResponseInterface
