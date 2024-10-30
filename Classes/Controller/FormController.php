@@ -110,10 +110,15 @@ class FormController extends ActionController
 
         // Send to HubSpot
         try {
-            $response = $this->hubspotService->sendForm($message, $formID);
+            if($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['simulateSubmit'] === false) {
+                $response = $this->hubspotService->sendForm($message, $formID);
+            } else {
+                $response = null;
+            }
+            
             $this->view->assignMultiple([
                 'form' => $form,
-                'response' => $response // In case we want to handle a failed send
+                'response' => $response // In case we want to handle a failed send more precisely
             ]);
         } catch (Exception $e) {
             $this->addFlashMessage(

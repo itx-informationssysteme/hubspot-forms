@@ -26,8 +26,11 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] = 'Your P
 * The error gets caught, so the site continues to operate, but the form will not be sent to HubSpot
 
 ## TODO
+### General
 * Icon in CType Select
 * Add layout to default template
 * Add feature to delete cache when site cache gets cleared
-* Extension Settings simulatedSubmit to skip sending to HubSpot
 * Add TYPO3 v12 and v13 compatibility
+
+### TYPO3 v12
+* Fix frontend error
