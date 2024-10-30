@@ -26,4 +26,4 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] = 'Your P
 * The error gets caught, so the site continues to operate, but the form will not be sent to HubSpot
 
 ## TODO
-* Add TYPO3 v12 and v13 compatibility
+* Add TYPO3 v13 support
