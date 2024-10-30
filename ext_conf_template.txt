@@ -2,5 +2,5 @@
 accessToken =
 # cat=Account Data; type=string; label=Portal ID: Enter your HubSpot Portal ID
 portalID =
-# cat=Settings; type=boolean; label=Simulate Submit: Doesn't send form data to HubSpot, instead shows the content in debug 
-simulateSubmit = false
+# cat=Settings; type=boolean; label=Simulate Submit: Doesn't send form data to HubSpot to reduce spam while testing
+simulateSubmit =
