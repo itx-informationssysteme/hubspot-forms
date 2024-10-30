@@ -15,8 +15,6 @@
                             <itemsProcFunc>Itx\HubspotForms\Service\Formloader->loadForms
                             </itemsProcFunc>
                             <renderType>selectSingle</renderType>
-                            <items>
-                            </items>
                         </config>
                     </settings.form>
                 </el>
