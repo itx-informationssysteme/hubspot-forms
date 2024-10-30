@@ -11,7 +11,7 @@ defined('TYPO3') or die();
         // plugin title, as visible in the drop-down in the backend, use "LLL:" for localization
         'LLL:EXT:hubspot_forms/Resources/Private/Language/locallang.xlf:plugin.description',
         // icon
-        'hubspot-forms-logo',
+        'hubspot-forms-logo-png',
         // group
         'plugin',
     );

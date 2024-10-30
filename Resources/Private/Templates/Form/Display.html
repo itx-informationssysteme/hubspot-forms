@@ -1,39 +1,42 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
-<f:layout name="ContentElementsGrey" />
+<f:layout name="DefaultLayout" />
 
-<f:flashMessages />
-<f:if condition="{form}">
-    <div>
-        <h3 style="margin: 10px 10px">{form.name}</h3>
-        <f:form name="form" object="{form}" action="submit" actionUri="{f:uri.action action:submit}#thank_you/{form.id}"
-            arguments="{message: form.configuration.postSubmitAction.value}">
-            <f:if condition="{fieldGroup.richText}">
-                <f:then>
-                    <div style="margin: 0px 10px">
-                        <f:format.html>{fieldGroup.richText}</f:format.html>
-                    </div>
-                </f:then>
-                <f:else>
-                    <f:for each="{form.fieldGroups}" as="fieldGroup">
-                        <div style="display: flex; margin: 20px 0px">
-                            <f:for each="{fieldGroup.fields}" as="field">
-                                <div style="margin: 0px 10px">
-                                    <f:render partial="Switch" arguments="{field: field, form: form}" />
-                                </div>
-                            </f:for>
+<f:section name="Main">
+    <f:flashMessages />
+    <f:if condition="{form}">
+        <div>
+            <h3 style="margin: 10px 10px">{form.name}</h3>
+            <f:form name="form" action="submit"
+                actionUri="{f:uri.action(action: 'submit')}#thank_you/{form.id}"
+                arguments="{message: form.configuration.postSubmitAction.value}">
+                <f:if condition="{fieldGroup.richText}">
+                    <f:then>
+                        <div style="margin: 0px 10px">
+                            <f:format.html>{fieldGroup.richText}</f:format.html>
                         </div>
-                    </f:for>
-                </f:else>
-            </f:if>
-            <div style="margin: 0px 10px; max-width: 60%;">
-                <f:render partial="LegalConsentOptions" arguments="{legalConsentOptions: form.legalConsentOptions, id:
+                    </f:then>
+                    <f:else>
+                        <f:for each="{form.fieldGroups}" as="fieldGroup">
+                            <div style="display: flex; margin: 20px 0px">
+                                <f:for each="{fieldGroup.fields}" as="field">
+                                    <div style="margin: 0px 10px">
+                                        <f:render partial="Switch" arguments="{field: field, form: form}" />
+                                    </div>
+                                </f:for>
+                            </div>
+                        </f:for>
+                    </f:else>
+                </f:if>
+                <div style="margin: 0px 10px; max-width: 60%;">
+                    <f:render partial="LegalConsentOptions" arguments="{legalConsentOptions: form.legalConsentOptions, id:
                 form.id}" />
-            </div>
-            <f:variable name="send" value="{f:translate(key:
+                </div>
+                <f:variable name="send" value="{f:translate(key:
                 'LLL:EXT:hubspot_forms/Resources/Private/Language/locallang.xlf:select.placeholder')}"></f:variable>
-            <f:form.submit style="margin: 0px 0px 10px 10px"
-                value="{f:if(condition: form.displayOptions.submitButtonText, then: form.displayOptions.submitButtonText, else: send)}" />
-        </f:form>
-    </div>
-</f:if>
+                <f:form.submit style="margin: 0px 0px 10px 10px"
+                    value="{f:if(condition: form.displayOptions.submitButtonText, then: form.displayOptions.submitButtonText, else: send)}" />
+            </f:form>
+        </div>
+    </f:if>
+</f:section>
