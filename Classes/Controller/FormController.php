@@ -6,7 +6,7 @@ use Exception;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use Itx\HubspotForms\Service\HubspotService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Itx\HubspotForms\Event\EditFormBeforeSubmitEvent;
@@ -26,7 +26,7 @@ class FormController extends ActionController
     public function displayAction()
     {
         $formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
-
+        
         try {
             $form = $this->hubspotService->fetchHubspotFormData($formID);
             $this->view->assign('form', $form);
@@ -34,7 +34,7 @@ class FormController extends ActionController
             $this->addFlashMessage(
                 'Please set your Access Token in the Extension settings',
                 'Warning',
-                FlashMessage::ERROR,
+                ContextualFeedbackSeverity::ERROR,
                 false
             );
             $this->logger->error('Error fetching data from HubSpot API', ['error' => $e]);
@@ -124,7 +124,7 @@ class FormController extends ActionController
             $this->addFlashMessage(
                 'Please set your PortalID in the Extension settings',
                 'Warning',
-                FlashMessage::ERROR,
+                ContextualFeedbackSeverity::ERROR,
                 false
             );
             $this->logger->error('Error fetching data from HubSpot API', ['error' => $e]);
