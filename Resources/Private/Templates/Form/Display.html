@@ -19,6 +19,10 @@
                     <f:else>
                         <f:for each="{form.fieldGroups}" as="fieldGroup">
                             <div style="display: flex; margin: 20px 0px">
+                                <f:if condition="{fieldGroup.richText}">
+                                    <f:format.html>{fieldGroup.richText}</f:format.html>
+                                </f:if>
+
                                 <f:for each="{fieldGroup.fields}" as="field">
                                     <div style="margin: 0px 10px">
                                         <f:render partial="Switch" arguments="{field: field, form: form}" />
