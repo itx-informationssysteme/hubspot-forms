@@ -1,10 +1,11 @@
 # Hubspot Forms Extension for TYPO3
-This extension will help displaying Hubspot forms in our pages by **dynamically** loading in any given Form using your PortalID and Access Token through the HubSpot API
+This extension will help displaying Hubspot forms in our pages by **dynamically** loading in any given form using the HubSpot API
 
 ## Installation (Composer)
 To install the extension using composer, run `composer req itx/hubspot-forms`
 
 ## Configuration
+* Create a HubSpot access token with the following scope: `forms`
 * To start using the extension, you will first have to set your **Access Token** and **PortalID** in the TYPO3 Backend `Settings > Extension Configuration > hubspot_forms`
 * Alternatively you can configure these settings inside your `AdditionalConfiguration.php` file located under `public/typo3conf/AdditionalConfiguration.php`
 e.g.
