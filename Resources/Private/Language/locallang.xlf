@@ -11,10 +11,10 @@
           <source>Abschicken</source>
       </trans-unit>
       <trans-unit id="plugin.title">
-          <source>HubSpot Forms</source>
+          <source>HubSpot Form</source>
       </trans-unit>
       <trans-unit id="plugin.description">
-          <source>Bindet Formulare aus Hubspot nahtlos ein</source>
+          <source>Dynamische Formulareinbindung aus Hubspot</source>
       </trans-unit>
       </body>
   </file>

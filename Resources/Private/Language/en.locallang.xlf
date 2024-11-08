@@ -13,12 +13,12 @@
         <target>Send</target>
       </trans-unit>
       <trans-unit id="plugin.title">
-          <source>HubSpot Forms</source>
-          <target>Hubspot Forms</target>
+          <source>HubSpot Form</source>
+          <target>Hubspot Form</target>
       </trans-unit>
       <trans-unit id="plugin.description">
-          <source>Bindet Formulare aus Hubspot nahtlos ein</source>
-          <target>Adds Hubspot Forms seamlessly</target>
+          <source>Dynamische Formulareinbindung aus Hubspot</source>
+          <target>Dynamic form from Hubspot</target>
       </trans-unit>
       </body>
   </file>

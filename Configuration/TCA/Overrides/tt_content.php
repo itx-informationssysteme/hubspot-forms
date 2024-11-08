@@ -9,13 +9,16 @@ defined('TYPO3') or die();
         // arbitrary, but unique plugin name (not visible in the backend)
         'ShowHubspotForms',
         // plugin title, as visible in the drop-down in the backend, use "LLL:" for localization
-        'LLL:EXT:hubspot_forms/Resources/Private/Language/locallang.xlf:plugin.description',
+        'LLL:EXT:hubspot_forms/Resources/Private/Language/locallang.xlf:plugin.title',
         // icon
         'hubspot-forms-logo-png',
         // group
-        'plugin',
+        'plugins',
+        // description
+        'LLL:EXT:hubspot_forms/Resources/Private/Language/locallang.xlf:plugin.description',
     );
-    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['hubspotforms_showhubspotforms'] = 'layout,select_key,recursive';
+
+    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['hubspotforms_showhubspotforms'] = 'layout,select_key,recursive,pages';
 
     $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['hubspotforms_showhubspotforms'] = 'pi_flexform';
 

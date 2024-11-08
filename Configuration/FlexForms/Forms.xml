@@ -8,13 +8,12 @@
                 <type>array</type>
                 <el>
                     <settings.form>
-                        <label>
-                            Forms</label>
+                        <label>Forms</label>
                         <config>
                             <type>select</type>
-                            <itemsProcFunc>Itx\HubspotForms\Service\Formloader->loadForms
-                            </itemsProcFunc>
+                            <itemsProcFunc>Itx\HubspotForms\Service\Formloader->loadForms</itemsProcFunc>
                             <renderType>selectSingle</renderType>
+							<required>true</required>
                         </config>
                     </settings.form>
                 </el>
