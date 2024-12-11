@@ -29,7 +29,7 @@ class Formloader
                 FlashMessage::class,
                 'Please configure a HubSpot access token in the extension configuration.',
                 'Missing HubSpot access token',
-                ContextualFeedbackSeverity::WARNING,
+                Typo3VersionUtility::getMajorVersion() < 12 ? FlashMessage::ERROR : ContextualFeedBackSeverity::ERROR,
                 true
             );
 

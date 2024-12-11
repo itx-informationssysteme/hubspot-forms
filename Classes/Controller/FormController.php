@@ -10,6 +10,8 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Itx\HubspotForms\Event\EditFormBeforeSubmitEvent;
+use ITX\Jobapplications\Utility\Typo3VersionUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 class FormController extends ActionController
 {
@@ -26,7 +28,7 @@ class FormController extends ActionController
     public function displayAction()
     {
         $formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
-        
+
         try {
             $form = $this->hubspotService->fetchHubspotFormData($formID);
             $this->view->assign('form', $form);
@@ -34,11 +36,21 @@ class FormController extends ActionController
             $this->addFlashMessage(
                 'Please set your Access Token in the Extension settings',
                 'Warning',
-                ContextualFeedbackSeverity::ERROR,
+                Typo3VersionUtility::getMajorVersion() < 12 ? FlashMessage::ERROR : ContextualFeedBackSeverity::ERROR,
                 false
             );
             $this->logger->error('Error fetching data from HubSpot API', ['error' => $e]);
         }
+
+        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['simulateSubmit']) {
+            $this->addFlashMessage(
+                'You are currently in Simulated Submit Mode',
+                'Reminder',
+                Typo3VersionUtility::getMajorVersion() < 12 ? FlashMessage::INFO : ContextualFeedBackSeverity::INFO, 
+                false
+            );
+        }
+
         return $this->htmlResponse();
     }
 
@@ -124,7 +136,7 @@ class FormController extends ActionController
             $this->addFlashMessage(
                 'Please set your PortalID in the Extension settings',
                 'Warning',
-                ContextualFeedbackSeverity::ERROR,
+                Typo3VersionUtility::getMajorVersion() < 12 ? FlashMessage::ERROR : ContextualFeedBackSeverity::ERROR,
                 false
             );
             $this->logger->error('Error fetching data from HubSpot API', ['error' => $e]);
