@@ -10,19 +10,22 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Itx\HubspotForms\Event\EditFormBeforeSubmitEvent;
-use ITX\Jobapplications\Utility\Typo3VersionUtility;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 class FormController extends ActionController
 {
     private HubspotService $hubspotService;
+    private Typo3Version $typo3Version;
 
     public function __construct(
         private RequestFactory $requestFactory,
         private readonly LoggerInterface $logger,
         HubspotService $hubspotService,
+        Typo3Version $typo3Version,
     ) {
         $this->hubspotService = $hubspotService;
+        $this->typo3Version = $typo3Version;
     }
 
     public function displayAction()
@@ -36,7 +39,7 @@ class FormController extends ActionController
             $this->addFlashMessage(
                 'Please set your Access Token in the Extension settings',
                 'Warning',
-                Typo3VersionUtility::getMajorVersion() < 12 ? FlashMessage::ERROR : ContextualFeedBackSeverity::ERROR,
+                $this->typo3Version->getMajorVersion() < 12 ? FlashMessage::ERROR : ContextualFeedBackSeverity::ERROR,
                 false
             );
             $this->logger->error('Error fetching data from HubSpot API', ['error' => $e]);
@@ -46,7 +49,7 @@ class FormController extends ActionController
             $this->addFlashMessage(
                 'You are currently in Simulated Submit Mode',
                 'Reminder',
-                Typo3VersionUtility::getMajorVersion() < 12 ? FlashMessage::INFO : ContextualFeedBackSeverity::INFO, 
+                $this->typo3Version->getMajorVersion() < 12 ? FlashMessage::INFO : ContextualFeedBackSeverity::INFO, 
                 false
             );
         }
@@ -136,7 +139,7 @@ class FormController extends ActionController
             $this->addFlashMessage(
                 'Please set your PortalID in the Extension settings',
                 'Warning',
-                Typo3VersionUtility::getMajorVersion() < 12 ? FlashMessage::ERROR : ContextualFeedBackSeverity::ERROR,
+                $this->typo3Version->getMajorVersion() < 12 ? FlashMessage::ERROR : ContextualFeedBackSeverity::ERROR,
                 false
             );
             $this->logger->error('Error fetching data from HubSpot API', ['error' => $e]);
