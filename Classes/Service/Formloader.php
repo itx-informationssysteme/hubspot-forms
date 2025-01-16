@@ -2,7 +2,6 @@
 
 namespace Itx\HubspotForms\Service;
 
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -12,22 +11,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Formloader
 {
-    private Typo3Version $typo3Version;
-
-    public function __construct(
-        Typo3Version $typo3Version,
-    ) {
-        $this->typo3Version = $typo3Version;
-    }
-
     public function loadForms(array &$config)
     {
+        $typo3Version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+
         $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
         $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
 
         $accessToken = $extensionConfiguration->get('hubspot_forms', 'accessToken');
         if ($accessToken === '' || $accessToken === null) {
-            if ($this->typo3Version->getMajorVersion() < 13) {
+            if ($typo3Version->getMajorVersion() < 13) {
                 throw new \RuntimeException(
                     'Please configure a HubSpot access token in the extension configuration.',
                 );
@@ -37,7 +30,7 @@ class Formloader
                 FlashMessage::class,
                 'Please configure a HubSpot access token in the extension configuration.',
                 'Missing HubSpot access token',
-                $this->typo3Version->getMajorVersion() < 12 ? FlashMessage::ERROR : ContextualFeedBackSeverity::ERROR,
+                $typo3Version->getMajorVersion() < 12 ? FlashMessage::ERROR : ContextualFeedBackSeverity::ERROR,
                 true
             );
 
