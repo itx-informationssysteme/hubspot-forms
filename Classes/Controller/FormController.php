@@ -120,6 +120,11 @@ class FormController extends ActionController
         // Add additional context params
         $message['context']['pageUri'] = $this->request->getHeaderLine('referer');
 
+        // Add HUTK
+        if (array_key_exists('hubspotutk', $_COOKIE)) {
+            $message['context']['hutk'] = $_COOKIE['hubspotutk'];
+        }
+
         // Change Form Data via event, if needed
         $event = $this->eventDispatcher->dispatch(
             new EditFormBeforeSubmitEvent($form, $message),
