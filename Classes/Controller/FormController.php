@@ -60,7 +60,15 @@ class FormController extends ActionController
     public function submitAction()
     {
         $formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
-
+ 
+        $arguments = $this->request->getArguments();
+        $requestedFormId = $arguments['formId'] ?? null;
+        if ($requestedFormId && $arguments['formId'] != $formID) {
+            return $this->htmlResponse();
+        }
+ 
+        $form = $this->hubspotService->fetchHubspotFormData($formID);
+        
         if($this->request->getMethod() != 'POST') {
             $this->redirect('display');
         }
