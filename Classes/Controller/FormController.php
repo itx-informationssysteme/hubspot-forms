@@ -64,7 +64,7 @@ class FormController extends ActionController
         $arguments = $this->request->getArguments();
         $requestedFormId = $arguments['formId'] ?? null;
         if ($requestedFormId && $arguments['formId'] != $formID) {
-            return;
+            return $this->htmlResponse();
         }
  
         $form = $this->hubspotService->fetchHubspotFormData($formID);
