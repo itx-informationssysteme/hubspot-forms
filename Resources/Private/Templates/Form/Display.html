@@ -7,7 +7,7 @@
     <f:if condition="{form}">
         <div>
             <h3 style="margin: 10px 10px">{form.name}</h3>
-            <f:form name="form" action="submit" section="thank_you/{form.id}" arguments="{formId: form.id}">
+            <f:form name="form" action="submit" section="thank_you/{form.id}" arguments="{message: form.configuration.postSubmitAction.value, formId: form.id}">
                 <f:if condition="{fieldGroup.richText}">
                     <f:then>
                         <div style="margin: 0px 10px">
