@@ -3,6 +3,9 @@
 namespace Itx\HubspotForms\Controller;
 
 use Exception;
+use Symfony\Component\Mime\Address;
+use TYPO3\CMS\Core\Mail\FluidEmail;
+use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use Itx\HubspotForms\Service\HubspotService;
@@ -17,15 +20,21 @@ class FormController extends ActionController
 {
     private HubspotService $hubspotService;
     private Typo3Version $typo3Version;
+    private Mailer $mailer;
+    private FluidEmail $email;
 
     public function __construct(
         private RequestFactory $requestFactory,
         private readonly LoggerInterface $logger,
         HubspotService $hubspotService,
         Typo3Version $typo3Version,
+        FluidEmail $email,
+        Mailer $mailer,
     ) {
         $this->hubspotService = $hubspotService;
         $this->typo3Version = $typo3Version;
+        $this->email = $email;
+        $this->mailer = $mailer;
     }
 
     public function displayAction()
@@ -49,7 +58,7 @@ class FormController extends ActionController
             $this->addFlashMessage(
                 'You are currently in Simulated Submit Mode',
                 'Reminder',
-                $this->typo3Version->getMajorVersion() < 12 ? FlashMessage::INFO : ContextualFeedBackSeverity::INFO, 
+                $this->typo3Version->getMajorVersion() < 12 ? FlashMessage::INFO : ContextualFeedBackSeverity::INFO,
                 false
             );
         }
@@ -60,15 +69,15 @@ class FormController extends ActionController
     public function submitAction()
     {
         $formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
- 
+
         $arguments = $this->request->getArguments();
         $requestedFormId = $arguments['formId'] ?? null;
         if ($requestedFormId && $arguments['formId'] != $formID) {
             return $this->htmlResponse();
         }
- 
+
         $form = $this->hubspotService->fetchHubspotFormData($formID);
-        
+
         if($this->request->getMethod() != 'POST') {
             $this->redirect('display');
         }
@@ -161,6 +170,32 @@ class FormController extends ActionController
             );
             $this->logger->error('Error fetching data from HubSpot API', ['error' => $e]);
         }
+
+        // Send contents of Form Submission per mail (if configured)
+        $enableMailing = $this->settings['enableMailing'] ?? '';
+
+        if ($enableMailing) {
+            $recipient = $this->settings['mailRecipient'] ?? '';
+            $sender = $this->settings['mailSender'] ?? '';
+            $subject = $this->settings['mailSubject'] ?? '';
+
+            try {
+                $this->email
+                    ->to(new Address($recipient))
+                    ->format(FluidEmail::FORMAT_HTML)->setTemplate('SubmissionEmail')
+                    ->assignMultiple([
+                        'subject' => $subject,
+                        'fields' => $message,
+                     ])
+                    ->replyTo($sender);
+
+                $this->mailer->send($this->email);
+            } catch (Exception $e) {
+                $this->logger->error('Error sending email', ['error' => $e]);
+            }
+        }
+
+        // Redirect to success page if configured
         if ($form['configuration']['postSubmitAction']['type'] === 'redirect_url') {
             $this->redirectToUri($form['configuration']['postSubmitAction']['value']);
         }

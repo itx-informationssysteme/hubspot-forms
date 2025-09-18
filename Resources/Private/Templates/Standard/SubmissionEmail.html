@@ -1,0 +1,8 @@
+<f:layout name="SystemEmail"/>
+<f:section name="Subject">{subject}</f:section>
+<f:section name="Title">Hubspot Form Submission</f:section>
+<f:section name="Main">
+    <f:for each="{fields}" as="field">
+        <span>{field.name}: {field.value}</span>
+    </f:for>
+</f:section>
