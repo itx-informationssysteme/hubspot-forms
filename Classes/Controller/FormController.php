@@ -15,26 +15,21 @@ use RuntimeException;
 use Itx\HubspotForms\Event\EditFormBeforeSubmitEvent;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class FormController extends ActionController
 {
     private HubspotService $hubspotService;
     private Typo3Version $typo3Version;
-    private Mailer $mailer;
-    private FluidEmail $email;
 
     public function __construct(
         private RequestFactory $requestFactory,
         private readonly LoggerInterface $logger,
         HubspotService $hubspotService,
         Typo3Version $typo3Version,
-        FluidEmail $email,
-        Mailer $mailer,
     ) {
         $this->hubspotService = $hubspotService;
         $this->typo3Version = $typo3Version;
-        $this->email = $email;
-        $this->mailer = $mailer;
     }
 
     public function displayAction()
@@ -179,17 +174,21 @@ class FormController extends ActionController
             $sender = $this->settings['mailSender'] ?? '';
             $subject = $this->settings['mailSubject'] ?? '';
 
+            $mailer = GeneralUtility::makeInstance(Mailer::class);
+            $email = GeneralUtility::makeInstance(FluidEmail::class);
+
             try {
-                $this->email
+                $email
                     ->to(new Address($recipient))
-                    ->format(FluidEmail::FORMAT_HTML)->setTemplate('SubmissionEmail')
+                    ->format(FluidEmail::FORMAT_HTML)
+                    ->setTemplate('SubmissionEmail')
                     ->assignMultiple([
                         'subject' => $subject,
-                        'fields' => $message,
+                        'fields' => $message['fields'],
                      ])
                     ->replyTo($sender);
 
-                $this->mailer->send($this->email);
+                $mailer->send($email);
             } catch (Exception $e) {
                 $this->logger->error('Error sending email', ['error' => $e]);
             }

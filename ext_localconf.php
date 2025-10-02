@@ -52,3 +52,5 @@ $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
 $iconRegistry->registerIcon('hubspot-forms-logo-png', BitmapIconProvider::class, [
     'source' => 'EXT:hubspot_forms/Resources/Public/Icons/Extension.png'
 ]);
+
+$GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'][213] = 'EXT:hubspot_forms/Resources/Private/Templates/Email/';
