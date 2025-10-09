@@ -4,12 +4,11 @@ namespace Itx\HubspotForms\Service;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Http\RequestFactory;
 
 class HubspotService
 {
-
     private string $portalID;
 
     private string $accessToken;
@@ -75,7 +74,7 @@ class HubspotService
         }
 
         if ($response->getHeaderLine('Content-Type') !== 'application/json;charset=utf-8') {
-            $this->logger->error("Cannot load form data: The request did not return JSON data");
+            $this->logger->error('Cannot load form data: The request did not return JSON data');
             throw new \RuntimeException(
                 'The request did not return JSON data',
             );

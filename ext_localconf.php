@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Itx\HubspotForms\Controller\FormController;
-use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\Writer\FileWriter;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 defined('TYPO3') or die();
 
@@ -53,7 +53,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['hubspot_fo
 
 $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
 $iconRegistry->registerIcon('hubspot-forms-logo-png', BitmapIconProvider::class, [
-    'source' => 'EXT:hubspot_forms/Resources/Public/Icons/Extension.png'
+    'source' => 'EXT:hubspot_forms/Resources/Public/Icons/Extension.png',
 ]);
 
 $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'][213] = 'EXT:hubspot_forms/Resources/Private/Templates/Email/';
@@ -61,7 +61,7 @@ $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'][213] = 'EXT:hubspot_for
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['Itx']['HubspotForms']['writerConfiguration'] = [
     LogLevel::WARNING => [
         FileWriter::class => [
-            'logFile' => Environment::getVarPath() . '/log/hubspot_forms.log'
-        ]
+            'logFile' => Environment::getVarPath() . '/log/hubspot_forms.log',
+        ],
     ],
 ];

@@ -2,20 +2,18 @@
 
 namespace Itx\HubspotForms\Controller;
 
-use Exception;
+use Itx\HubspotForms\Event\EditFormBeforeSubmitEvent;
+use Itx\HubspotForms\Service\HubspotService;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Mime\Address;
+use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Core\Http\RequestFactory;
-use Itx\HubspotForms\Service\HubspotService;
-use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use Psr\Log\LoggerInterface;
-use RuntimeException;
-use Itx\HubspotForms\Event\EditFormBeforeSubmitEvent;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class FormController extends ActionController
 {
@@ -39,7 +37,7 @@ class FormController extends ActionController
         try {
             $form = $this->hubspotService->fetchHubspotFormData($formID);
             $this->view->assign('form', $form);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->addFlashMessage(
                 'Please set your Access Token and Portal ID in the Extension settings',
                 'Error',
@@ -73,7 +71,7 @@ class FormController extends ActionController
 
         $form = $this->hubspotService->fetchHubspotFormData($formID);
 
-        if($this->request->getMethod() != 'POST') {
+        if ($this->request->getMethod() != 'POST') {
             $this->redirect('display');
         }
 
@@ -111,14 +109,14 @@ class FormController extends ActionController
                 $message['legalConsentOptions']['consent']['consentToProcess'] = true;
                 $message['legalConsentOptions']['consent']['text'] = $form['legalConsentOptions']['communicationConsentText'];
                 foreach ($form['legalConsentOptions']['communicationsCheckboxes'] as $checkbox) {
-                    $message['legalConsentOptions']['consent']['communications'][] = array('value' => $arguments['legalConsentOptions/' . $checkbox['subscriptionTypeId']] != '', 'subscriptionTypeId' => $checkbox['subscriptionTypeId'], 'text' => $checkbox['label']);
+                    $message['legalConsentOptions']['consent']['communications'][] = ['value' => $arguments['legalConsentOptions/' . $checkbox['subscriptionTypeId']] != '', 'subscriptionTypeId' => $checkbox['subscriptionTypeId'], 'text' => $checkbox['label']];
                 }
                 break;
             case 'explicit_consent_to_process':
                 $message['legalConsentOptions']['consent']['consentToProcess'] = $arguments['consentToProcess'] !== '';
                 $message['legalConsentOptions']['consent']['text'] = $form['legalConsentOptions']['communicationConsentText'];
                 foreach ($form['legalConsentOptions']['communicationsCheckboxes'] as $checkbox) {
-                    $message['legalConsentOptions']['consent']['communications'][] = array('value' => $arguments['legalConsentOptions/' . $checkbox['subscriptionTypeId']] != '', 'subscriptionTypeId' => $checkbox['subscriptionTypeId'], 'text' => $checkbox['label']);
+                    $message['legalConsentOptions']['consent']['communications'][] = ['value' => $arguments['legalConsentOptions/' . $checkbox['subscriptionTypeId']] != '', 'subscriptionTypeId' => $checkbox['subscriptionTypeId'], 'text' => $checkbox['label']];
                 }
                 break;
             case 'none':
@@ -126,7 +124,7 @@ class FormController extends ActionController
                 break;
             default:
                 $this->logger->error("Invalid LegalConsentOption type: $legalConsentType");
-                throw new RuntimeException("Invalid LegalConsentOption type: $legalConsentType");
+                throw new \RuntimeException("Invalid LegalConsentOption type: $legalConsentType");
                 break;
         }
 
@@ -147,7 +145,7 @@ class FormController extends ActionController
 
         // Send to HubSpot
         try {
-            if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['simulateSubmit'] === "0" || $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['simulateSubmit'] === '') {
+            if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['simulateSubmit'] === '0' || $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['simulateSubmit'] === '') {
                 $response = $this->hubspotService->sendForm($message, $formID);
             } else {
                 $response = null;
@@ -155,9 +153,9 @@ class FormController extends ActionController
 
             $this->view->assignMultiple([
                 'form' => $form,
-                'response' => $response // In case we want to handle a failed send more precisely
+                'response' => $response, // In case we want to handle a failed send more precisely
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->addFlashMessage(
                 'Please set your PortalID in the Extension settings',
                 'Warning',
@@ -187,11 +185,11 @@ class FormController extends ActionController
                     ->assignMultiple([
                         'subject' => $subject,
                         'fields' => $message['fields'],
-                     ])
+                    ])
                     ->replyTo($sender);
 
                 $mailer->send($email);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $this->logger->error('Error sending email', ['error' => $e]);
             }
         }
