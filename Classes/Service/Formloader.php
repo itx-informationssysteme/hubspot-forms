@@ -2,7 +2,6 @@
 
 namespace Itx\HubspotForms\Service;
 
-use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -56,7 +55,6 @@ class Formloader
         );
 
         if ($response->getStatusCode() !== 200) {
-            $this->logger->error("Cannot reach HubSpot API endpoint: {$response->getStatusCode()}");
             throw new \RuntimeException(
                 'Returned status code is ' . $response->getStatusCode(),
             );

@@ -54,3 +54,11 @@ $iconRegistry->registerIcon('hubspot-forms-logo-png', BitmapIconProvider::class,
 ]);
 
 $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'][213] = 'EXT:hubspot_forms/Resources/Private/Templates/Email/';
+
+$GLOBALS['TYPO3_CONF_VARS']['LOG']['itx']['hubspot_forms'] = [
+    'writerConfiguration' => [
+        LogLevel::WARNING => [
+            StreamWriter::class => ['stream' => 'var/log/myext-warn.log'],
+        ],
+    ],
+];
