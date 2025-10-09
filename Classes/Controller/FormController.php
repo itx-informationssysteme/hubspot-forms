@@ -41,12 +41,12 @@ class FormController extends ActionController
             $this->view->assign('form', $form);
         } catch (Exception $e) {
             $this->addFlashMessage(
-                'Please set your Access Token in the Extension settings',
-                'Warning',
+                'Please set your Access Token and Portal ID in the Extension settings',
+                'Error',
                 $this->typo3Version->getMajorVersion() < 12 ? FlashMessage::ERROR : ContextualFeedBackSeverity::ERROR,
                 false
             );
-            $this->logger->error('Error fetching data from HubSpot API', ['error' => $e]);
+            $this->logger->error('Error fetching data from HubSpot API: Access Token or Portal ID not set');
         }
 
         if ((bool)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['simulateSubmit']) {

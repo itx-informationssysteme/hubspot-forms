@@ -7,6 +7,9 @@ use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\Writer\FileWriter;
 
 defined('TYPO3') or die();
 
@@ -55,10 +58,10 @@ $iconRegistry->registerIcon('hubspot-forms-logo-png', BitmapIconProvider::class,
 
 $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'][213] = 'EXT:hubspot_forms/Resources/Private/Templates/Email/';
 
-$GLOBALS['TYPO3_CONF_VARS']['LOG']['itx']['hubspot_forms'] = [
-    'writerConfiguration' => [
-        LogLevel::WARNING => [
-            StreamWriter::class => ['stream' => 'var/log/myext-warn.log'],
-        ],
+$GLOBALS['TYPO3_CONF_VARS']['LOG']['Itx']['HubspotForms']['writerConfiguration'] = [
+    LogLevel::WARNING => [
+        FileWriter::class => [
+            'logFile' => Environment::getVarPath() . '/log/hubspot_forms.log'
+        ]
     ],
 ];
