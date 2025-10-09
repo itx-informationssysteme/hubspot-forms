@@ -3,6 +3,7 @@
 namespace Itx\HubspotForms\Service;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
@@ -18,6 +19,7 @@ class HubspotService
     public function __construct(
         private RequestFactory $requestFactory,
         private readonly FrontendInterface $cache,
+        private readonly LoggerInterface $logger,
     ) {
         $this->portalID = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] ?? '';
         $this->accessToken = 'Bearer ' . $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['accessToken'] ?? '';
@@ -66,12 +68,14 @@ class HubspotService
         );
 
         if ($response->getStatusCode() !== 200) {
+            $this->logger->error("Cannot reach HubSpot API endpoint: {$response->getStatusCode()}");
             throw new \RuntimeException(
                 'Returned status code is ' . $response->getStatusCode(),
             );
         }
 
         if ($response->getHeaderLine('Content-Type') !== 'application/json;charset=utf-8') {
+            $this->logger->error("Cannot load form data: The request did not return JSON data");
             throw new \RuntimeException(
                 'The request did not return JSON data',
             );

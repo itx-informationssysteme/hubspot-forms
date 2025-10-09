@@ -125,6 +125,7 @@ class FormController extends ActionController
                 // $message->legalConsentOptions = null;
                 break;
             default:
+                $this->logger->error("Invalid LegalConsentOption type: $legalConsentType");
                 throw new RuntimeException("Invalid LegalConsentOption type: $legalConsentType");
                 break;
         }
@@ -163,7 +164,7 @@ class FormController extends ActionController
                 $this->typo3Version->getMajorVersion() < 12 ? FlashMessage::ERROR : ContextualFeedBackSeverity::ERROR,
                 false
             );
-            $this->logger->error('Error fetching data from HubSpot API', ['error' => $e]);
+            $this->logger->error('Error sending data to HubSpot API', ['error' => $e]);
         }
 
         // Send contents of Form Submission per mail (if configured)
@@ -179,6 +180,7 @@ class FormController extends ActionController
 
             try {
                 $email
+                    ->from(new Address($sender))
                     ->to(new Address($recipient))
                     ->format(FluidEmail::FORMAT_HTML)
                     ->setTemplate('SubmissionEmail')
