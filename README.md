@@ -13,13 +13,17 @@ e.g.
 $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['accessToken'] = 'Your Access Token';
 $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] = 'Your PortalID';
 ```
-* Next, you can add a General Plugin content element where you want your form to be on your website
-* After that, go to the Plugin Tab in the settings of your new content element. Here, you can select which form you want to load from your given HubSpot Portal in Form of a select list
+
+## Usage
+* First, add a General Plugin content element where you want your form to be on your website
+* After that, go to the `Plugin` Tab in the settings of your new content element. Here, you can select which form you want to load from your given HubSpot Portal in Form of a select list
 * After selecting your form, switch over to the frontend to see it all loaded in
 * There is an option to only simulate form submissions in the `Extension Settings`. This toggle disables the line of code responsible for the POST request to HubSpot after submitting a form
+* Additionally, you can send emails with the contents of the form submissions if you configure it in the `Plugin` tab of the content element
 
 ## Styling
 * Every field type of the forms is rendered by a partial, if you want to individually style your form fields, overwrite the partials and add your own styling
+* The same goes for the template of the optional mail
 
 ## Known Issues
 ### Multiple Multiple-Checkboxes
