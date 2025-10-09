@@ -16,6 +16,40 @@
 							<required>true</required>
                         </config>
                     </settings.form>
+                    <settings.enableMailing>
+                        <label>Enable Mailing</label>
+                        <config>
+                            <type>check</type>
+                            <renderType>checkboxToggle</renderType>
+                            <default>0</default>
+                        </config>
+                    </settings.enableMailing>
+                    <settings.mailSubject>
+                        <label>Mail subject</label>
+                        <displayCond>FIELD:settings.enableMailing:=:1</displayCond>
+                        <config>
+                            <type>input</type>
+                            <size>40</size>
+                        </config>
+                    </settings.mailSubject>
+                    <settings.mailSender>
+                        <label>Mail sender</label>
+                        <displayCond>FIELD:settings.enableMailing:=:1</displayCond>
+                        <config>
+                            <type>input</type>
+                            <size>40</size>
+                            <eval>trim,email</eval>
+                        </config>
+                    </settings.mailSender>
+                    <settings.mailRecipient>
+                        <label>Mail recipient</label>
+                        <displayCond>FIELD:settings.enableMailing:=:1</displayCond>
+                        <config>
+                            <type>input</type>
+                            <size>40</size>
+                            <eval>trim,email</eval>
+                        </config>
+                    </settings.mailRecipient>
                 </el>
             </ROOT>
         </sDEF>
