@@ -4,3 +4,7 @@ accessToken =
 portalID =
 # cat=General; type=boolean; label=Doesn't send form data to HubSpot to reduce spam while testing
 simulateSubmit =
+# cat=FriendlyCaptcha; type=string; label=Site Key: Enter your Friendly Captcha site Key
+siteKey =
+# cat=FriendlyCaptcha; type=string; label=Secret: Enter your Friendly Captcha secret
+secret =

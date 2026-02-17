@@ -1,20 +1,20 @@
 services:
-  _defaults:
-    autowire: true
-    autoconfigure: true
-    public: false
-  Itx\HubspotForms\:
-    resource: '../Classes/*'
-    exclude: '../Classes/Domain/Model/*'
-  cache.hubspot_form_cache:
-    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
-    arguments: ['hubspot_form_cache']
-    public: true
-  Itx\HubspotForms\Service\HubspotService:
-    arguments:
-      $cache: '@cache.hubspot_form_cache'
-  Itx\HubspotForms\EventListener\EditFormBeforeSubmit:
-    tags:
-      - name: event.listener
-        identifier: 'myEditFormBeforeSubmit'
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+    Itx\HubspotForms\:
+        resource: '../Classes/*'
+        exclude: '../Classes/Domain/Model/*'
+    cache.hubspot_form_cache:
+        class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+        factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+        arguments: ['hubspot_form_cache']
+        public: true
+    Itx\HubspotForms\Service\HubspotService:
+        arguments:
+            $cache: '@cache.hubspot_form_cache'
+    Itx\HubspotForms\EventListener\EditFormBeforeSubmit:
+        tags:
+            - name: event.listener
+              identifier: 'myEditFormBeforeSubmit'

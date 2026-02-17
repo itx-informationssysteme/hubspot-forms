@@ -2,7 +2,12 @@
 	<label style="display: block" for="{id}/{field.name}">
 		<f:format.stripTags>{field.label}{f:if(condition: field.required, then: ' *', else: '')}</f:format.stripTags>
 	</label>
-	<f:form.textfield style="display: inline-block" id="{id}/{field.name}" name="{field.name}"
-					  value="{field.defaultValue}" required="{field.required}" type="{field.fieldType}"
-					  placeholder="{field.placeholder}" />
+	<f:form.textfield
+		style="display: inline-block"
+		id="{id}/{field.name}"
+		name="{field.name}"
+		value="{field.defaultValue}"
+		required="{field.required}"
+		type="{field.fieldType}"
+		placeholder="{field.placeholder}" />
 </div>

@@ -3,6 +3,7 @@
 namespace Itx\HubspotForms\Controller;
 
 use Itx\HubspotForms\Event\EditFormBeforeSubmitEvent;
+use Itx\HubspotForms\Service\FriendlyCaptchaService;
 use Itx\HubspotForms\Service\HubspotService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mime\Address;
@@ -18,15 +19,18 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 class FormController extends ActionController
 {
     private HubspotService $hubspotService;
+    private FriendlyCaptchaService $friendlyCaptchaService;
     private Typo3Version $typo3Version;
 
     public function __construct(
         private RequestFactory $requestFactory,
         private readonly LoggerInterface $logger,
         HubspotService $hubspotService,
+        FriendlyCaptchaService $friendlyCaptchaService,
         Typo3Version $typo3Version,
     ) {
         $this->hubspotService = $hubspotService;
+        $this->friendlyCaptchaService = $friendlyCaptchaService;
         $this->typo3Version = $typo3Version;
     }
 
@@ -62,6 +66,26 @@ class FormController extends ActionController
     public function submitAction()
     {
         $formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
+
+        /*
+
+        Useless Code, as without verification submitting isn't even possible
+
+        $siteKey = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['siteKey'] ?? '';
+        $secret = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['secret'] ?? '';
+
+        if ($siteKey != '' && $secret != '') {
+            if (!empty($_POST['frc-captcha-solution'])) {
+                $isValid = $this->friendlyCaptchaService->validateToken($_POST['frc-captcha-solution'], $siteKey, $secret);
+                if (!$isValid) {
+                    throw new \RuntimeException('Invalid frc-captcha-solution');
+                }
+            } else {
+                throw new \RuntimeException('Invalid frc-captcha-solution');
+            }
+
+            return $this->htmlResponse();
+        } */
 
         $arguments = $this->request->getArguments();
         $requestedFormId = $arguments['formId'] ?? null;
