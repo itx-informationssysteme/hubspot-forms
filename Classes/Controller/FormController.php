@@ -69,8 +69,9 @@ class FormController extends ActionController
 
         $siteKey = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['siteKey'] ?? '';
         $secret = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['secret'] ?? '';
+        $enableCaptcha = $this->settings['enableCaptcha'] ?? '0';
 
-        if ($siteKey != '' && $secret != '') {
+        if ($enableCaptcha && $siteKey != '' && $secret != '') {
             if (!empty($_POST['frc-captcha-solution'])) {
                 $isValid = $this->friendlyCaptchaService->validateToken($_POST['frc-captcha-solution'], $siteKey, $secret);
                 if (!$isValid) {
