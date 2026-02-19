@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Itx\HubspotForms\Controller\FormController;
+use Itx\HubspotForms\Service\FriendlyCaptchaValidate;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -65,3 +66,5 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['Itx']['HubspotForms']['writerConfiguration']
         ],
     ],
 ];
+
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['frcValidateCaptcha'] = FriendlyCaptchaValidate::class;

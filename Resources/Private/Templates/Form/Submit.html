@@ -1,10 +1,10 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+	<f:layout name="DefaultLayout" />
 
-<f:layout name="DefaultLayout" />
-
-<f:section name="Main">
-    <f:flashMessages />
-    <p id="thank_you/{form.id}" style="margin: 0px 10px; scroll-margin-top: 100px">
-        <f:format.stripTags>{form.configuration.postSubmitAction.value}</f:format.stripTags>
-    </p>
-</f:section>
+	<f:section name="Main">
+		<f:flashMessages />
+		<p id="thank_you/{form.id}" style="margin: 0px 10px; scroll-margin-top: 100px">
+			<f:format.stripTags>{form.configuration.postSubmitAction.value}</f:format.stripTags>
+		</p>
+	</f:section>
+</html>

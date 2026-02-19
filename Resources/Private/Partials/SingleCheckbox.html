@@ -1,5 +1,9 @@
-<f:form.checkbox id="{id}/{field.name}" name="{field.name}" value="true"
-    required="{f:if(condition: field.required, then: 'required', else: '')}" style="appearance: auto" />
+<f:form.checkbox
+	id="{id}/{field.name}"
+	name="{field.name}"
+	value="true"
+	required="{f:if(condition: field.required, then: 'required', else: '')}"
+	style="appearance: auto" />
 <label for="{id}/{field.name}">
-    <f:format.stripTags>{field.label}{f:if(condition: field.required, then: ' *', else: '')}</f:format.stripTags>
+	<f:format.stripTags>{field.label}{f:if(condition: field.required, then: ' *', else: '')}</f:format.stripTags>
 </label>

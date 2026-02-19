@@ -2,7 +2,7 @@ name: publish
 on:
     workflow_dispatch:
     release:
-        types: [ published ]
+        types: [published]
 jobs:
     publish:
         name: Publish new version to TER
@@ -48,4 +48,6 @@ jobs:
               run: composer global require typo3/tailor --prefer-dist --no-progress --no-suggest
 
             - name: Publish to TER
-              run: php ~/.composer/vendor/bin/tailor ter:publish --comment "${{ steps.get-comment.outputs.comment }}" ${{ steps.get-version.outputs.version }}
+              run:
+                  php ~/.composer/vendor/bin/tailor ter:publish --comment "${{ steps.get-comment.outputs.comment }}" ${{
+                  steps.get-version.outputs.version }}
