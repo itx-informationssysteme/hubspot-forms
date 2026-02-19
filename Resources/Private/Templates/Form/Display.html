@@ -6,10 +6,6 @@
 
 	<f:section name="Main">
 		<f:flashMessages />
-		<f:asset.script
-			identifier="hubspot-forms-friendlycaptcha"
-			src="EXT:hubspot_forms/Resources/Public/Scripts/friendlycaptcha.js"
-			defer="1" />
 		<f:if condition="{form}">
 			<div>
 				<h3 style="margin: 10px 10px">{form.name}</h3>
@@ -17,7 +13,6 @@
 					name="form"
 					action="submit"
 					section="thank_you/{form.id}"
-					class="hubspot-form"
 					arguments="{message: form.configuration.postSubmitAction.value, formId: form.id}">
 					<f:if condition="{fieldGroup.richText}">
 						<f:then>
