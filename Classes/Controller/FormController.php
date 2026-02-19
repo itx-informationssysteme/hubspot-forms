@@ -67,10 +67,6 @@ class FormController extends ActionController
     {
         $formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
 
-        /*
-
-        Useless Code, as without verification submitting isn't even possible
-
         $siteKey = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['siteKey'] ?? '';
         $secret = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['secret'] ?? '';
 
@@ -78,14 +74,24 @@ class FormController extends ActionController
             if (!empty($_POST['frc-captcha-solution'])) {
                 $isValid = $this->friendlyCaptchaService->validateToken($_POST['frc-captcha-solution'], $siteKey, $secret);
                 if (!$isValid) {
-                    throw new \RuntimeException('Invalid frc-captcha-solution');
+                    $this->addFlashMessage(
+                        'Friendly Captcha Token was not valid',
+                        'Warning',
+                        $this->typo3Version->getMajorVersion() < 12 ? FlashMessage::WARNING : ContextualFeedBackSeverity::WARNING,
+                        false
+                    );
+                    $this->redirect('display');
                 }
             } else {
-                throw new \RuntimeException('Invalid frc-captcha-solution');
+                $this->addFlashMessage(
+                    'Friendly Captcha Token was not valid',
+                    'Warning',
+                    $this->typo3Version->getMajorVersion() < 12 ? FlashMessage::WARNING : ContextualFeedBackSeverity::WARNING,
+                    false
+                );
+                $this->redirect('display');
             }
-
-            return $this->htmlResponse();
-        } */
+        }
 
         $arguments = $this->request->getArguments();
         $requestedFormId = $arguments['formId'] ?? null;
@@ -181,7 +187,7 @@ class FormController extends ActionController
             ]);
         } catch (\Exception $e) {
             $this->addFlashMessage(
-                'Please set your PortalID in the Extension settings',
+                'Sending form to Hubspot failed',
                 'Warning',
                 $this->typo3Version->getMajorVersion() < 12 ? FlashMessage::ERROR : ContextualFeedBackSeverity::ERROR,
                 false
