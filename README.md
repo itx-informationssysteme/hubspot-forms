@@ -13,7 +13,7 @@ e.g.
 $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['accessToken'] = 'Your Access Token';
 $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] = 'Your PortalID';
 ```
-* FriendlyCaptcha support has been added. To use it, just add your sitekey and secret from FriendlyCaptcha to the according setting fields
+* FriendlyCaptcha support has been added. To use it, just add your sitekey and secret from FriendlyCaptcha to the according setting fields and then toggle the captcha on in the plugin settings
 
 ## Usage
 * First, add a General Plugin content element where you want your form to be on your website
