@@ -47,7 +47,7 @@
 						value="{f:translate(key:
                 'LLL:EXT:hubspot_forms/Resources/Private/Language/locallang.xlf:select.placeholder')}"></f:variable>
 					<f:variable name="sitekey" value="{itx:friendlyCaptchaSitekey()}"> </f:variable>
-					<f:if condition="{sitekey}">
+					<f:if condition="{sitekey} && {settings.enableCaptcha}">
 						<div>
 							<script
 								type="module"

@@ -50,6 +50,14 @@
                             <eval>trim,email</eval>
                         </config>
                     </settings.mailRecipient>
+					<settings.enableCaptcha>
+						<label>Enable FriendlyCaptcha</label>
+						<config>
+							<type>check</type>
+							<renderType>checkboxToggle</renderType>
+							<default>0</default>
+						</config>
+					</settings.enableCaptcha>
                 </el>
             </ROOT>
         </sDEF>
