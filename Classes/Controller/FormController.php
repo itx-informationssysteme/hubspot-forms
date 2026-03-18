@@ -67,13 +67,20 @@ class FormController extends ActionController
     {
         $formID = $this->settings['form'] ?? '';   // Kann nicht im Konstruktor schon geladen werden
 
+        $arguments = $this->request->getArguments();
+        $requestedFormId = $arguments['formId'] ?? null;
+        if ($requestedFormId && $arguments['formId'] != $formID) {
+            return $this->htmlResponse();
+        }
+
         $siteKey = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['siteKey'] ?? '';
         $secret = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['secret'] ?? '';
         $enableCaptcha = $this->settings['enableCaptcha'] ?? '0';
+        $captchaFieldName = 'frc-captcha-solution-' . $formID;
 
         if ($enableCaptcha && $siteKey != '' && $secret != '') {
-            if (!empty($_POST['frc-captcha-solution'])) {
-                $isValid = $this->friendlyCaptchaService->validateToken($_POST['frc-captcha-solution'], $siteKey, $secret);
+            if (!empty($_POST[$captchaFieldName])) {
+                $isValid = $this->friendlyCaptchaService->validateToken($_POST[$captchaFieldName], $siteKey, $secret);
                 if (!$isValid) {
                     $this->addFlashMessage(
                         'Friendly Captcha Token was not valid',
@@ -81,6 +88,7 @@ class FormController extends ActionController
                         $this->typo3Version->getMajorVersion() < 12 ? FlashMessage::WARNING : ContextualFeedBackSeverity::WARNING,
                         false
                     );
+                    $this->logger->error('Friendly Captcha Token was not valid for form ' . $formID);
                     $this->redirect('display');
                 }
             } else {
@@ -90,17 +98,10 @@ class FormController extends ActionController
                     $this->typo3Version->getMajorVersion() < 12 ? FlashMessage::WARNING : ContextualFeedBackSeverity::WARNING,
                     false
                 );
+                $this->logger->error('Captcha is enabled but no captcha solution string is present in form ' . $formID);
                 $this->redirect('display');
             }
         }
-
-        $arguments = $this->request->getArguments();
-        $requestedFormId = $arguments['formId'] ?? null;
-        if ($requestedFormId && $arguments['formId'] != $formID) {
-            return $this->htmlResponse();
-        }
-
-        $form = $this->hubspotService->fetchHubspotFormData($formID);
 
         if ($this->request->getMethod() != 'POST') {
             $this->redirect('display');
