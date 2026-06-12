@@ -1,4 +1,4 @@
-<div>
+<div style="{f:if(condition: field.hidden, then: 'display: none')}">
     <label>
         <f:format.stripTags>{field.label}{f:if(condition: field.required, then: ' *', else: '')}</f:format.stripTags>
     </label>
