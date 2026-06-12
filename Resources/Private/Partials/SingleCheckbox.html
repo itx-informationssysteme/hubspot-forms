@@ -3,7 +3,7 @@
 	name="{field.name}"
 	value="true"
 	required="{f:if(condition: field.required, then: 'required', else: '')}"
-	style="appearance: auto" />
-<label for="{id}/{field.name}">
+	style="appearance: auto {f:if(condition: field.hidden, then: 'display: none')}" />
+<label for="{id}/{field.name}" style="{f:if(condition: field.hidden, then: 'display: none')}">
 	<f:format.stripTags>{field.label}{f:if(condition: field.required, then: ' *', else: '')}</f:format.stripTags>
 </label>

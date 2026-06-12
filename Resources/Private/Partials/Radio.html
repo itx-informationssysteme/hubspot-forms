@@ -1,10 +1,10 @@
-<div>
+<div style="{f:if(condition: field.hidden, then: 'display: none')}">
     <label>
         <f:format.stripTags>{field.label}{f:if(condition: field.required, then: ' *', else: '')}</f:format.stripTags>
     </label>
     <f:for each="{field.options}" as="option">
         <br>
-        <f:form.radio id="{id}/{field.name}/{option.label}" name="{field.name}" value="{option.value}"
+        <f:form.radio id="{id}/{field.name}/{option.label}" name="{field.name}/{option.value}" value="{option.value}"
             style="appearance: auto" required="{f:if(condition: field.required, then: 'true', else: '')}" />
         <label for="{id}/{field.name}/{option.label}">{option.label}</label>
     </f:for>

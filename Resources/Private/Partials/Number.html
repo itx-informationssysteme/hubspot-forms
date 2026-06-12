@@ -1,4 +1,4 @@
-<div style="display: inline-block">
+<div style="display: {f:if(condition: field.hidden, then: 'none', else: 'inline-block')}">
 	<label style="display: block" for="{id}/{field.name}">
 		<f:format.stripTags>{field.label}{f:if(condition: field.required, then: ' *', else: '')}</f:format.stripTags>
 	</label>
