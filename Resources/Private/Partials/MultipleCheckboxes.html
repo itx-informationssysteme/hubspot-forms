@@ -4,7 +4,7 @@
     </label>
     <f:for each="{field.options}" as="option">
         <br>
-        <f:form.checkbox id="{id}/{field.name}/{option.label}" class="multipleCheckbox" name="{option.value}"
+        <f:form.checkbox id="{id}/{field.name}/{option.label}" class="multipleCheckbox" name="{field.name}/{option.value}"
             value="true" style="appearance: auto"
             required="{f:if(condition: field.required, then: 'true', else: '')}" />
         <label for="{id}/{field.name}/{option.label}">{option.label}</label>
