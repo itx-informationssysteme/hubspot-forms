@@ -118,7 +118,7 @@ class FormController extends ActionController
                         $message['fields'][] = ['objectTypeId' => $field['objectTypeId'], 'name' => $field['name'], 'value' => array_key_exists($field['name'], $arguments) ? $arguments[$field['name']] : ''];
                     } else {
                         foreach ($field['options'] as $option) {
-                            if ($arguments[$field['name']/$option['value']]) {
+                            if ($arguments[$field['name'] . '/' . $option['value']]) {
                                 $message['fields'][] = ['objectTypeId' =>  $field['objectTypeId'], 'name' => $field['name'], 'value' => $option['value']];
                             }
                         }
