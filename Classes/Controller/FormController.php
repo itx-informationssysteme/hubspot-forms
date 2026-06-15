@@ -228,7 +228,7 @@ class FormController extends ActionController
 
         // Redirect to success page if configured
         if ($form['configuration']['postSubmitAction']['type'] === 'redirect_url') {
-            $this->redirectToUri($form['configuration']['postSubmitAction']['value']);
+            return $this->redirectToUri($form['configuration']['postSubmitAction']['value']);
         }
 
         return $this->htmlResponse();
