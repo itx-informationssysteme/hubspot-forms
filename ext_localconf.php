@@ -26,16 +26,6 @@ ExtensionUtility::configurePlugin(
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['hubspot_form_cache']
     ??= [];
 
-$GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'][213] = 'EXT:hubspot_forms/Resources/Private/Templates/Email/';
-
-$GLOBALS['TYPO3_CONF_VARS']['LOG']['Itx']['HubspotForms']['writerConfiguration'] = [
-    LogLevel::WARNING => [
-        FileWriter::class => [
-            'logFile' => Environment::getVarPath() . '/log/hubspot_forms.log',
-        ],
-    ],
-];
-
 if ($typo3Version->getMajorVersion() < 14) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
     mod {
@@ -61,3 +51,13 @@ if ($typo3Version->getMajorVersion() < 14) {
     }
 ');
 }
+
+$GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'][213] = 'EXT:hubspot_forms/Resources/Private/Templates/Email/';
+
+$GLOBALS['TYPO3_CONF_VARS']['LOG']['Itx']['HubspotForms']['writerConfiguration'] = [
+    LogLevel::WARNING => [
+        FileWriter::class => [
+            'logFile' => Environment::getVarPath() . '/log/hubspot_forms.log',
+        ],
+    ],
+];
