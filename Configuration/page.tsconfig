@@ -1,0 +1,21 @@
+mod {
+        wizards {
+            newContentElement {
+                wizardItems {
+                    plugins {
+                        elements {
+                            hubspot_forms {
+                                iconIdentifier = hubspot-forms-logo-png
+                                title = Hubspot Forms
+                                description = Add a HubSpot Form to your site - seamlessly
+                                tt_content_defValues {
+                                    CType = list
+                                    list_type = hubspotforms_showhubspotforms
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+}

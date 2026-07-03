@@ -16,6 +16,7 @@ defined('TYPO3') or die();
         'plugins',
         // description
         'LLL:EXT:hubspot_forms/Resources/Private/Language/locallang.xlf:plugin.description',
+        'FILE:EXT:hubspot_forms/Configuration/FlexForms/Forms.xml',
     );
 
     $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['hubspotforms_showhubspotforms'] = 'layout,select_key,recursive,pages';
