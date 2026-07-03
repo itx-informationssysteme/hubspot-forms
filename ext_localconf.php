@@ -10,6 +10,8 @@ use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 defined('TYPO3') or die();
 
+$typo3Version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+
 ExtensionUtility::configurePlugin(
     // extension name, matching the PHP namespaces (but without the vendor)
     'HubspotForms',
@@ -33,3 +35,29 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['Itx']['HubspotForms']['writerConfiguration']
         ],
     ],
 ];
+
+if ($typo3Version->getMajorVersion() < 14) {
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
+    mod {
+        wizards {
+            newContentElement {
+                wizardItems {
+                    plugins {
+                        elements {
+                            hubspot_forms {
+                                iconIdentifier = hubspot-forms-logo-png
+                                title = Hubspot Forms
+                                description = Add a HubSpot Form to your site - seamlessly
+                                tt_content_defValues {
+                                    CType = list
+                                    list_type = hubspotforms_showhubspotforms
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+');
+}
