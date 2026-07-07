@@ -79,8 +79,10 @@ class FormController extends ActionController
         $captchaFieldName = 'frc-captcha-solution-' . $formID;
 
         if ($enableCaptcha && $siteKey != '' && $secret != '') {
-            if (!empty($_POST[$captchaFieldName])) {
-                $isValid = $this->friendlyCaptchaService->validateToken($_POST[$captchaFieldName], $siteKey, $secret);
+            $captchaToken = trim((string)($_POST[$captchaFieldName] ?? ''));
+
+            if ($captchaToken !== '') {
+                $isValid = $this->friendlyCaptchaService->validateToken($captchaToken, $siteKey, $secret);
                 if (!$isValid) {
                     $this->addFlashMessage(
                         'Friendly Captcha Token was not valid',
@@ -89,7 +91,7 @@ class FormController extends ActionController
                         false
                     );
                     $this->logger->error('Friendly Captcha Token was not valid for form ' . $formID);
-                    $this->redirect('display');
+                    return $this->redirect('display');
                 }
             } else {
                 $this->addFlashMessage(
@@ -99,12 +101,12 @@ class FormController extends ActionController
                     false
                 );
                 $this->logger->error('Captcha is enabled but no captcha solution string is present in form ' . $formID);
-                $this->redirect('display');
+                return $this->redirect('display');
             }
         }
 
         if ($this->request->getMethod() != 'POST') {
-            $this->redirect('display');
+            return $this->redirect('display');
         }
 
         $arguments = $this->request->getArguments();
