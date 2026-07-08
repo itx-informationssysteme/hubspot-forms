@@ -8,3 +8,5 @@ simulateSubmit =
 siteKey =
 # cat=FriendlyCaptcha; type=string; label=Secret: Enter your Friendly Captcha secret
 secret =
+# cat=FriendlyCaptcha; type=boolean; label=Enable in every form: Enable friendly captcha in every form
+enableGlobally =

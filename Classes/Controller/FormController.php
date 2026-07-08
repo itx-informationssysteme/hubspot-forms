@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Itx\HubspotForms\Controller;
 
 use Itx\HubspotForms\Event\EditFormBeforeSubmitEvent;
@@ -75,10 +77,12 @@ class FormController extends ActionController
 
         $siteKey = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['siteKey'] ?? '';
         $secret = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['secret'] ?? '';
-        $enableCaptcha = $this->settings['enableCaptcha'] ?? '0';
+        $enableCaptcha = $this->settings['enableCaptcha'] ?? false;
+        $enableGlobally = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['enableGlobally'] ?? false;
+
         $captchaFieldName = 'frc-captcha-solution-' . $formID;
 
-        if ($enableCaptcha && $siteKey != '' && $secret != '') {
+        if (($enableCaptcha || $enableGlobally) && $siteKey != '' && $secret != '') {
             $captchaToken = trim((string)($_POST[$captchaFieldName] ?? ''));
 
             if ($captchaToken !== '') {
