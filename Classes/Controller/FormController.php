@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Itx\HubspotForms\Controller;
 
 use Itx\HubspotForms\Event\EditFormBeforeSubmitEvent;
@@ -23,7 +25,6 @@ class FormController extends ActionController
     private Typo3Version $typo3Version;
 
     public function __construct(
-        private RequestFactory $requestFactory,
         private readonly LoggerInterface $logger,
         HubspotService $hubspotService,
         FriendlyCaptchaService $friendlyCaptchaService,
@@ -75,10 +76,12 @@ class FormController extends ActionController
 
         $siteKey = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['siteKey'] ?? '';
         $secret = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['secret'] ?? '';
-        $enableCaptcha = $this->settings['enableCaptcha'] ?? '0';
+        $enableCaptcha = $this->settings['enableCaptcha'] ?? false;
+        $enableGlobally = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['enableGlobally'] ?? false;
+
         $captchaFieldName = 'frc-captcha-solution-' . $formID;
 
-        if ($enableCaptcha && $siteKey != '' && $secret != '') {
+        if (($enableCaptcha || $enableGlobally) && $siteKey != '' && $secret != '') {
             if (!empty($_POST[$captchaFieldName])) {
                 $isValid = $this->friendlyCaptchaService->validateToken($_POST[$captchaFieldName], $siteKey, $secret);
                 if (!$isValid) {
