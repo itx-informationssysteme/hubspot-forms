@@ -116,6 +116,11 @@ class FormController extends ActionController
         $arguments = $this->request->getArguments();
         $form = $this->hubspotService->fetchHubspotFormData($formID);
 
+        if ($this->isSpamSubmission($arguments)) {
+            $this->logger->error('Submission blocked for form ' .$formID .'. Content was analyzed and spam was detected.');
+            return $this->redirect('display');
+        }
+
         // Add fields to response
         foreach ($form['fieldGroups'] as $fieldGroup) {
             if (array_key_exists('fields', $fieldGroup)) {
@@ -238,5 +243,138 @@ class FormController extends ActionController
         }
 
         return $this->htmlResponse();
+    }
+
+    public function isSpamSubmission(array $arguments): bool
+    {
+        $firstname = trim((string)($arguments['firstname'] ?? ''));
+        $lastname  = trim((string)($arguments['lastname'] ?? ''));
+
+        return $this->isSuspiciousName($firstname) || $this->isSuspiciousName($lastname);
+    }
+
+    /**
+     * Determines whether a name appears to be
+     * automatically generated or otherwise suspicious.
+     *
+     * Returns {@see true} if the name is considered suspicious and should
+     * be treated as spam; otherwise {@see false}.
+     *
+     * @param string $name The submitted first name or last name.
+     * @return bool True if the name is classified as suspicious, otherwise false.
+     */
+    public function isSuspiciousName(string $name): bool
+    {
+        $name = preg_replace('/\s+/u', ' ', trim(strip_tags($name)));
+        if (empty($name)) {
+            return false;
+        }
+
+        if (
+            preg_match('/https?:\/\/|www\.|@/iu', $name) ||
+            preg_match("/[^\p{L}\p{M}\s'\-]/u", $name)
+        ) {
+            $this->logger->error('Spam detected. In your name ' .$name .', we found a number, web or mail-address or unusual special characters.');
+            return true;
+        }
+
+        $compactName = preg_replace("/[\s'\-]/u", '', $name);
+        if ($compactName === null) {
+            $this->logger->error('Spam detected. Your name ' .$name .', looks empty, excluding spaces, hyphens, and apostrophes.');
+            return true;
+        }
+
+        $length = mb_strlen($compactName, 'UTF-8');
+        if ($length > 40) {
+            $this->logger->error('Spam detected. Your name ' .$name .', is an unrealistically long single name.');
+            return true;
+        }
+        else if ($length < 6) {
+            return false;
+        }
+
+        $lowerName = mb_strtolower($compactName, 'UTF-8');
+
+        if (preg_match('/[bcdfghjklmnpqrstvwxz]{5,}/iu', $lowerName)) {
+            $this->logger->error('Spam detected. Your name ' .$name .', has a very long consonant cluster.');
+            return true;
+        }
+
+        $matchCount = preg_match_all('/[aeiouyäöüéèêáàâíìîóòôúùû]/iu', $lowerName, $vowelMatches);
+        if ($matchCount === false) {
+            return false;
+        }
+
+        $vowelRatio = $matchCount / max($length, 1);
+
+        if ($length >= 8 && $vowelRatio < 0.15) {
+            $this->logger->error('Spam detected. The name "' . $name . '" contains no or very few vowels.');
+            return true;
+        }
+
+        $caseTransitions = $this->countCaseTransitions($compactName);
+
+        if ($length >= 10 && $caseTransitions >= 5) {
+            $this->logger->error('Spam detected. Your name ' .$name .' consist of random capitalization.');
+            return true;
+        }
+
+        $uppercaseCount = preg_match_all('/\p{Lu}/u', $compactName);
+        if ($uppercaseCount === false) {
+            return false;
+        }
+
+        if ($length >= 10 && $uppercaseCount >= 5) {
+            $this->logger->error('Spam detected. The name "' . $name . '" has an excessive number of capital letters within a single word.');
+            return true;
+        }
+
+        $characters = preg_split('//u', $lowerName, -1, PREG_SPLIT_NO_EMPTY);
+        if ($characters !== false) {
+            $uniqueRatio = count(array_unique($characters)) / max(count($characters), 1);
+
+            if (
+                $length >= 12 &&
+                $uniqueRatio > 0.80 &&
+                ($caseTransitions >= 3 || $vowelRatio < 0.25)
+            ) {
+                $this->logger->error('Spam detected. Your name ' .$name .', looks like random generated text.');
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Counts the number of transitions between uppercase and lowercase letters.
+     *
+     * @param string $value The string to analyse.
+     * @return int Number of uppercase/lowercase transitions.
+     */
+    public function countCaseTransitions(string $value): int
+    {
+        $characters = preg_split('//u', $value, -1, PREG_SPLIT_NO_EMPTY);
+        if ($characters === false) {
+            return 0;
+        }
+
+        $transitions = 0;
+        $previousCase = null;
+
+        foreach ($characters as $character) {
+            if (!preg_match('/\p{L}/u', $character)) {
+                continue;
+            }
+
+            $currentCase = preg_match('/\p{Lu}/u', $character) ? 'upper' : 'lower';
+            if ($previousCase !== null && $currentCase !== $previousCase) {
+                $transitions++;
+            }
+
+            $previousCase = $currentCase;
+        }
+
+        return $transitions;
     }
 }
