@@ -80,10 +80,8 @@ class FormController extends ActionController
         $enableCaptcha = $this->settings['enableCaptcha'] ?? false;
         $enableGlobally = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['enableGlobally'] ?? false;
 
-        $captchaFieldName = 'frc-captcha-solution-' . $formID;
-
         if (($enableCaptcha || $enableGlobally) && $siteKey != '' && $secret != '') {
-            $captchaToken = trim((string)($_POST[$captchaFieldName] ?? ''));
+            $captchaToken = trim((string)($_POST['frc-captcha-response'] ?? ''));
 
             if ($captchaToken !== '') {
                 $isValid = $this->friendlyCaptchaService->validateToken($captchaToken, $siteKey, $secret);

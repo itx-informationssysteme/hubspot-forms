@@ -51,20 +51,20 @@
 					<f:if condition="{sitekey} && ({settings.enableCaptcha} || {enableGlobally})">
 						<div>
 							<script
-								type="module"
-								src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.12/widget.module.min.js"
-								async
-								defer></script>
+									type="module"
+									src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@1.0.2/site.min.js"
+									async
+									defer></script>
 							<script
-								nomodule
-								src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.12/widget.min.js"
-								async
-								defer></script>
+									nomodule
+									src="https://cdn.jsdelivr.net/npm/@friendlycaptcha/sdk@1.0.2/site.compat.min.js"
+									async
+									defer></script>
 							<div
-								class="frc-captcha"
-								data-sitekey="<f:format.raw>{sitekey}</f:format.raw>"
-								data-solution-field-name="frc-captcha-solution-{form.id}"
-								data-start="auto"></div>
+									class="frc-captcha"
+									data-sitekey="<f:format.raw>{sitekey}</f:format.raw>"
+									data-solution-field-name="frc-captcha-solution-{form.id}"
+									data-start="auto"></div>
 						</div>
 					</f:if>
 					<button class="button button--filled" type="submit">

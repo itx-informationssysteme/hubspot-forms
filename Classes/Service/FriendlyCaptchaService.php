@@ -11,11 +11,10 @@ class FriendlyCaptchaService
     {
         $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
 
-        $url = 'https://api.friendlycaptcha.com/api/v1/siteverify';
+        $url = 'https://global.frcapi.com/api/v2/captcha/siteverify';
         $payload = json_encode([
-            'solution' => $token,
-            'secret' => $secret,
-            'sitekey' => $siteKey,
+            'response' => $token,
+            'sitekey'  => $siteKey,
         ]);
 
         try {
@@ -26,7 +25,8 @@ class FriendlyCaptchaService
                     'body' => $payload,
                     'headers' => [
                         'Content-Type' => 'application/json',
-                        'Accept' => 'application/json',
+                        'Accept'       => 'application/json',
+                        'X-API-Key'    => $secret,
                     ],
                     'timeout' => 5,
                 ]
