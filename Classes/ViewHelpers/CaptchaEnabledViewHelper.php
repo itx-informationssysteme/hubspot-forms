@@ -10,6 +10,6 @@ class CaptchaEnabledViewHelper extends AbstractViewHelper
 {
     public function render(): int
     {
-        return $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['enableGlobally'] ?? 0;
+        return intval($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['enableGlobally'] ?? 0);
     }
 }
