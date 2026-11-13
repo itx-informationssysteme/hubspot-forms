@@ -5,7 +5,8 @@
 	<f:layout name="DefaultLayout" />
 
 	<f:section name="Main">
-		<f:flashMessages />
+        <f:asset.script identifier="hubspot-conditional-fields"  src="EXT:hubspot_forms/Resources/Public/Js/ConditionalFields.js" />
+        <f:flashMessages />
 		<f:if condition="{form}">
 			<div>
 				<h3 style="margin: 10px 10px">{form.name}</h3>
@@ -33,6 +34,16 @@
 										</div>
 									</f:for>
 								</div>
+                                <f:for each="{fieldGroup.fields}" as="field">
+                                    <f:for each="{field.dependentFields}" as="dependent">
+                                        <div hidden
+                                            data-dependent-on="{field.name}"
+                                            data-operator="{dependent.dependentCondition.operator}"
+                                            data-values='{dependent.dependentCondition.values -> f:format.json()}'>
+                                            <f:render partial="Switch" arguments="{field: dependent.dependentField, form: form}" />
+                                        </div>
+                                    </f:for>
+                                </f:for>
 							</f:for>
 						</f:else>
 					</f:if>

@@ -132,6 +132,15 @@ class FormController extends ActionController
                             }
                         }
                     }
+
+                    if (array_key_exists('dependentFields', $field)) {
+                        foreach ($field['dependentFields'] as $dependent) {
+                            $dep = $dependent['dependentField'] ?? null;
+                            if ($dep && !empty($arguments[$dep['name']])) {
+                                $message['fields'][] = ['objectTypeId' => $dep['objectTypeId'], 'name' => $dep['name'], 'value' => $dep['fieldType'] === 'single_checkbox' ? 'true' : $arguments[$dep['name']]];
+                            }
+                        }
+                    }
                 }
             }
         }
