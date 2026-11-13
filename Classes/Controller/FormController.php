@@ -172,6 +172,16 @@ class FormController extends ActionController
         // Add additional context params
         $message['context']['pageUri'] = $this->request->getHeaderLine('referer');
 
+        if($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['trackIp']){
+            // Add the submitter's IP address
+            $ipAddress = $this->request->getAttribute('normalizedParams')?->getRemoteAddress()
+                ?? GeneralUtility::getIndpEnv('REMOTE_ADDR');
+
+            if (is_string($ipAddress) && filter_var($ipAddress, FILTER_VALIDATE_IP)) {
+                $message['context']['ipAddress'] = $ipAddress;
+            }
+        }
+
         // Add HUTK
         if (array_key_exists('hubspotutk', $_COOKIE)) {
             $message['context']['hutk'] = $_COOKIE['hubspotutk'];
