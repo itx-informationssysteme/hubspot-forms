@@ -25,15 +25,20 @@
 
     const isMet = (operator, expected, submitted) => {
         const has = (v) => submitted.includes(v);
+        const sameSet = expected.every(has) && submitted.every((s) => expected.includes(s));
         switch (operator) {
-            case 'set_any':     return expected.some(has);
-            case 'set_all':     return expected.length > 0 && expected.every(has);
-            case 'set_not_any': return !expected.some(has);
-            case 'set_not_all': return !expected.every(has);
-            case 'is_not_empty':return submitted.length > 0;
-            default:            return true;
+            case 'set_any':      return expected.some(has);
+            case 'set_all':      return expected.length > 0 && expected.every(has);
+            case 'set_not_any':  return !expected.some(has);
+            case 'set_not_all':  return !expected.every(has);
+            case 'set_eq':       return submitted.length > 0 && sameSet;
+            case 'set_neq':      return !(submitted.length > 0 && sameSet);
+            case 'is_not_empty': return submitted.length > 0;
+            default:
+                console.warn('ConditionalFields: unsupported operator', operator);
+                return true;
         }
-    };
+    }
 
     const init = (form) => {
         const wrappers = Array.from(form.querySelectorAll('[data-dependent-on]'));
