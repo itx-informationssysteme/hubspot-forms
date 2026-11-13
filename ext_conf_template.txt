@@ -2,6 +2,8 @@
 accessToken =
 # cat=General; type=string; label=Portal ID: Enter your HubSpot Portal ID
 portalID =
+# cat=General; type=boolean; label=Track IP location of the sender
+trackIp  =
 # cat=General; type=boolean; label=Doesn't send form data to HubSpot to reduce spam while testing
 simulateSubmit =
 # cat=FriendlyCaptcha; type=string; label=Site Key: Enter your Friendly Captcha site Key
