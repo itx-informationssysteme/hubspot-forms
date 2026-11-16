@@ -7,7 +7,7 @@ To install the extension using composer, run `composer req itx/hubspot-forms`
 ## Configuration
 * Create a HubSpot access token with the following scope: `forms`
 * To start using the extension, you will first have to set your **Access Token** and **PortalID** in the TYPO3 Backend `Settings > Extension Configuration > hubspot_forms`
-* Alternatively you can configure these settings inside your `AdditionalConfiguration.php` file located under `public/typo3conf/AdditionalConfiguration.php`
+* Alternatively you can configure these settings inside your `additional.php` file located under `public/typo3conf/AdditionalConfiguration.php`
 e.g.
 ```php
 $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['accessToken'] = 'Your Access Token';
@@ -28,11 +28,19 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['portalID'] = 'Your P
 * There is an option to only simulate form submissions in the `Extension Settings`. This toggle disables the line of code responsible for the POST request to HubSpot after submitting a form
 <img width="981" height="731" alt="{0F270FED-AAF6-4222-A654-8309983E74A7}" src="https://github.com/user-attachments/assets/f49dfb3b-af27-4242-91a3-3f37ec8f9161" />
 
-* Additionally, you can send emails with the contents of the form submissions if you configure it in the `Plugin` tab of the content element
+### Emails
+* You can send emails with the contents of the form submissions if you configure it in the `Plugin` tab of the content element
+
+### IP Tracking
+* Tracking the IP of the submitter is now also possible, but since getting legal consent for that is not simple and left up to the site owner, the setting is not visible in the Extension Settings and off by default
+* To forward the submitters IP-Address to Hubspot, set `$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['hubspot_forms']['trackIp']` to `true` in your additional.php file
 
 ## Styling
 * Every field type of the forms is rendered by a partial, if you want to individually style your form fields, overwrite the partials and add your own styling
 * The same goes for the template of the optional mail
+
+## Experimental Features
+* Conditional fields from Hubspot now get rendered when the condition is fulfilled and sent to Hubspot if filled. Currently not all combinations of field types and conditions is tested, so if you find a non-working one please open an [issue](https://github.com/itx-informationssysteme/hubspot-forms/issues) 
 
 ## Known Issues
 ### Multiple Multiple-Checkboxes
